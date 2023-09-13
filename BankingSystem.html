@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<!-- Website - www.codingnepalweb.com -->
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Simple Banking System</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+	<!--login page-->
+    <div id="login-area" class="login-area-style">
+      <h1>Login</h1>
+      <form action="#">
+        <div class="txt_field">
+          <input id="username" type="text" required />
+          <span></span>
+          <label>Username</label>
+        </div>
+        <div class="txt_field">
+          <input id="password" type="password" required />
+          <span></span>
+          <label>Password</label>
+        </div>
+        <div class="pass">Forgot Password?</div>
+		<button id="submit-login" class="submit_link">Login</button><br/><br/>
+        <button id="change-register" class="change_link">Create Account</button><br/><br/>
+      </form>
+    </div>
+	
+	<!--registration page-->
+	<div id="registration-area" class="registration-area-style">
+		<div class="title">REGISTRATION</div>
+		<div class="content">
+		  <form action="#">
+			<div class="user-details">
+			  <div class="input-box">
+				<span class="details">Full Name</span>
+				<input type="text" placeholder="Enter your name" required>
+			  </div>
+			  <div class="input-box">
+				<span class="details">Username</span>
+				<input type="text" placeholder="Enter your username" required>
+			  </div>
+			  <div class="input-box">
+				<span class="details">Email</span>
+				<input type="text" placeholder="Enter your email" required>
+			  </div>
+			  <div class="input-box">
+				<span class="details">Phone Number</span>
+				<input type="text" placeholder="Enter your number" required>
+			  </div>
+			  <div class="input-box">
+				<span class="details">Password</span>
+				<input type="text" placeholder="Enter your password" required>
+			  </div>
+			  <div class="input-box">
+				<span class="details">Confirm Password</span>
+				<input type="text" placeholder="Confirm your password" required>
+			  </div>
+			</div>
+			<div class="button">
+				<button id="submit-register" class="submit_link" type="submit">Login</button><br/><br/>
+				<button id="return-register" class="return_link">Return</button><br/><br/>
+			  <!--<input type="submit" value="Register">-->
+			</div>
+		  </form>
+		</div>
+	</div>
+	
+	<!--home page-->
+    <!--<div id="home-area">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="deposit dolar-box">
+                    <h4>Deposit</h4>
+                    <h1>$<span id="current-deposit">00</span></h1>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="withdraw dolar-box">
+                    <h4>Withdraw</h4>
+                    <h1>$<span id="current-withdraw">00</span></h1>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="balance dolar-box">
+                    <h4>Balance</h4>
+                    <h1>$<span id="current-balance">1240</span></h1>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="submit-area mt-4">
+                    <h3>Deposit</h3>
+                    <form id="deposit-form" action="#">
+                        <input id="deposit-amount" type="text" class="form-control" placeholder="$ amount you want to deposit">
+                        <button id="depositBtn" class="btn btn-success" type="submit">Deposit</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="submit-area mt-4" id="withdraw-area">
+                    <h3>Withdraw</h3>
+                    <form action="" id="withdraw-form">
+                        <input type="text" id="withdraw-amount" class="form-control" placeholder="$ amount you want to withdraw">
+                        <button id="withdrawBtn" class="btn btn-success" type="submit">Withdraw</button>
+                        <p id="no-balance">Insufficient balance</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>-->
+	
+	<!--home page-->
+    <div id="transaction-area" class="transaction-area-style">
+		<div class="content">
+		<form action="#">
+			<div class="user-details">
+			  <div class="input-box">
+				<button id="submit-withdraw" class="submit_link" type="submit">Withdraw</button>
+			  </div>
+			  <div class="input-box">
+				<button id="submit-deposit" class="submit_link" type="submit">Deposit</button>
+			  </div>
+			  <div class="input-box">
+				<button id="submit-transfer" class="submit_link" type="submit">Transfer</button>
+			  </div>
+			</div>
+		</form>
+        </div>
+        <div class="row">
+			<table>
+			</table>
+        </div>
+    </div>
+	
+	<script src="script.js"></script>
+	</body>
+</html>
