@@ -176,9 +176,127 @@ input[type="submit"]:hover {
     color: red;
     display: none;
 }
+.container-accounts-style{
+	width: 920px;
+	margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.container-accounts-table-style{
+	position: relative;
+	border-spacing: 1;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+}
+.container-accounts-thead-style{
+	height: 60px;
+    background: #36304a;
+    font-family: OpenSans-Regular;
+    font-size: 18px;
+    color: #fff;
+    line-height: 1.2;
+    font-weight: unset;
+	text-align: left;
+}
+.container-accounts-details{
+	height: 50px;
+	font-family: OpenSans-Regular;
+    font-size: 15px;
+    color: gray;
+    line-height: 1.2;
+    font-weight: unset;
+}
+.column1{
+	width: 20%;
+    padding-left: 40px;
+}
+.column2{
+	width: 25%;
+    padding-left: 40px;
+}
+.column3{
+	width: 20%;
+    padding-left: 40px;
+}
+.column4{
+	width: 20%;
+    padding-left: 40px;
+}
+.column5{
+	width: 15%;
+    padding-left: 40px;
+}
+@media screen and (max-width: 950px) {
+    table {
+        display:block
+    }
+
+    table>*,table tr,table td,table th {
+        display: block
+    }
+
+    table thead {
+        display: none
+    }
+
+    table tbody tr {
+        height: auto;
+        padding: 37px 0
+    }
+
+    table tbody tr td {
+        padding-left: 40%!important;
+        margin-bottom: 24px
+    }
+
+    table tbody tr td:last-child {
+        margin-bottom: 0
+    }
+
+    table tbody tr td:before {
+        font-family: OpenSans-Regular;
+        font-size: 14px;
+        color: #999;
+        line-height: 1.2;
+        font-weight: unset;
+        position: absolute;
+        width: 40%;
+        left: 30px;
+        top: 0
+    }
+
+    table tbody tr td:nth-child(1):before {
+        content: "ACCOUNT NAME: "
+    }
+
+    table tbody tr td:nth-child(2):before {
+        content: "BALANCE: "
+    }
+
+    table tbody tr td:nth-child(3):before {
+        content: "STATUS"
+    }
+
+    table tbody tr td:nth-child(4):before {
+        content: "Price"
+    }
+
+    .column1,.column2,.column3,.column4 {
+        width: 100%
+    }
+
+    tbody tr {
+        font-size: 14px
+    }
+}
 
 #registration
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+{@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');}
 *{
   margin: 0;
   padding: 0;
@@ -302,7 +420,7 @@ form .input-box span.details{
   /* transform: scale(0.99); */
   background: linear-gradient(-135deg, #71b7e6, #9b59b6);
   }
- @media(max-width: 584px){
+ @media(max-width: 950px){
  .container{
   max-width: 100%;
 }
@@ -325,4 +443,102 @@ form .user-details .input-box{
   .container .content .category{
     flex-direction: column;
   }
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 25%; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content-profile {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 80%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+
+/* Modal Content */
+.modal-content-transactions {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 50%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+
+/**/
+.modal-content-account {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 50%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+/* Add Animation */
+@-webkit-keyframes animatetop {
+  from {top:-300px; opacity:0} 
+  to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+  from {top:-300px; opacity:0}
+  to {top:0; opacity:1}
+}
+
+/* The Close Button */
+.close {
+  color: white;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-header {
+  padding: 2px 16px;
+  background-color: #5cb85c;
+  color: white;
+}
+
+.modal-body {padding: 2px 16px;}
+
+.modal-footer {
+  padding: 2px 16px;
+  background-color: #5cb85c;
+  color: white;
 }
