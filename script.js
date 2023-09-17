@@ -61,7 +61,7 @@ function dropDownAccounts(type){
 
 //update account
 function updateAccountTransact(amount, accountId){
-    let newBal = 0;
+    let newBal = 0, newBalance = 0.00;
     let filteredAccountUser = ACCOUNTTABLE.filter(function (users){
         return users.userID == document.getElementById('user-id').value;
     });
@@ -72,11 +72,12 @@ function updateAccountTransact(amount, accountId){
         //newAmount = accounts.balance + newAmount;
         newBal = accounts.balance;
     });
-    newBal = newBal + amount;
-    console.log('newBal: ' + amount);
+    newBalance = parseFloat(newBal);
+    newBalance += amount;
+    console.log('newBal: ' + newBalance);
     filteredAccount.forEach(function (accounts) {
         //newAmount = accounts.balance + newAmount;
-        accounts.balance = newBal;
+        accounts.balance = newBalance;
     });
     viewTableUser();
 }
@@ -288,10 +289,22 @@ function getTransactionInfo(accountId, amount){
 
 //withdrawal
 document.getElementById('submit-withdraw').onclick = function() {
+    let newBal = 0, newBalance = 0.00;
     let amount = document.getElementById("withdraw-amount").value;
     let select = document.getElementById("withdraw-account").options;
     let account = select[select.selectedIndex].id;
     let transactType = "withdrawal";
+    let filteredAccountUser = ACCOUNTTABLE.filter(function (users){
+        return users.userID == document.getElementById('user-id').value;
+    });
+    let filteredAccount = filteredAccountUser.filter(function (accounts){
+        return accounts.accountID == account;
+    });
+    filteredAccount.forEach(function (accounts) {
+        newBal = accounts.balance;
+    });
+    newBalance = parseFloat(newBal);
+    newBalance -= amount;
     if(account == 'none'){
         alert('Please Select an Account.');
     }
@@ -301,6 +314,9 @@ document.getElementById('submit-withdraw').onclick = function() {
         }
         else if(amount<0){
             alert('Amount sholud not be less than 0.');
+        }
+        else if(newBalance < .05){
+            alert('Cannot withdraw from account. Maintaining balance of 5 centavos is required.');
         }
         else{
             if(!confirm('Confirm Withdrawal?')){
@@ -321,6 +337,9 @@ document.getElementById('submit-withdraw').onclick = function() {
         alert('Amount Missing.');
     }
 };
+document.getElementById('close-withdraw').onclick = function() {
+    document.getElementById('modal-withdraw').style.display = "none";
+}
 
 //deposit
 document.getElementById('submit-deposit').onclick = function() {
@@ -355,15 +374,30 @@ document.getElementById('submit-deposit').onclick = function() {
         alert('Amount Missing.');
     }
 };
+document.getElementById('close-deposit').onclick = function() {
+    document.getElementById('modal-deposit').style.display = "none";
+}
 
 //transfer
 document.getElementById('submit-transfer').onclick = function() {
+    let newBal = 0, newBalance = 0.00;
     let amount = document.getElementById("transfer-amount").value;
     let selectfrom = document.getElementById("transfer-account-from").options;
     let selectto = document.getElementById("transfer-account-to").options;
     let accountfrom = selectfrom[selectfrom.selectedIndex].id;
     let accountto = selectto[selectto.selectedIndex].id;
     let transactType = "transfer";
+    let filteredAccountUser = ACCOUNTTABLE.filter(function (users){
+        return users.userID == document.getElementById('user-id').value;
+    });
+    let filteredAccount = filteredAccountUser.filter(function (accounts){
+        return accounts.accountID == selectfrom;
+    });
+    filteredAccount.forEach(function (accounts) {
+        newBal = accounts.balance;
+    });
+    newBalance = parseFloat(newBal);
+    newBalance -= amount;
     if(accountfrom == 'none' || accountto == 'none'){
         alert('Please Select an Account.');
     }
@@ -376,6 +410,9 @@ document.getElementById('submit-transfer').onclick = function() {
         }
         else if(amount<0){
             alert('Amount sholud not be less than 0.');
+        }
+        else if(newBalance < .05){
+            alert('Cannot withdraw from account. Maintaining balance of 5 centavos is required.');
         }
         else{
             if(!confirm('Confirm Transfer?')){
@@ -397,6 +434,10 @@ document.getElementById('submit-transfer').onclick = function() {
         alert('Amount Missing.');
     }
 };
+
+document.getElementById('close-transfer').onclick = function() {
+    document.getElementById('modal-transfer').style.display = "none";
+}
 
 //view-account gawin nlng 10 yung visible na transactions!!
 /*btnOpenAccount.addEventListener('click',function(){
