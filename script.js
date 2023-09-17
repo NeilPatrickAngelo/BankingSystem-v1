@@ -1,10 +1,10 @@
 const TODAYDATE = new Date().toLocaleString();
 
 const USERTABLE = [
-	{userID: "admin", firstName: "Neil", lastName: "Administrator", email: "admin@gmail.com", userName: "admin", password: "admin", userType: 0},
-	{userID: "user1", firstName: "Neil1", lastName: "Falceso1", email: "admin@gmail.com", userName: "user1", password: "user1", userType: 1},
-	{userID: "user2", firstName: "Neil2", lastName: "Falceso2", email: "admin@gmail.com", userName: "user2", password: "user2", userType: 1},
-	{userID: "user3", firstName: "Neil3", lastName: "Falceso3", email: "admin@gmail.com", userName: "user3", password: "user3", userType: 1},
+	{userID: "admin", firstName: "Neil", lastName: "Administrator", email: "admin@gmail.com", userName: "admin", password: "admin", userType: 0, status: "Unfreeze", attemptLogin: 0},
+	{userID: "user1", firstName: "Neil1", lastName: "Falceso1", email: "admin@gmail.com", userName: "user1", password: "user1", userType: 1, status: "Unfreeze", attemptLogin: 0},
+	{userID: "user2", firstName: "Neil2", lastName: "Falceso2", email: "admin@gmail.com", userName: "user2", password: "user2", userType: 1, status: "Unfreeze", attemptLogin: 0},
+	{userID: "user3", firstName: "Neil3", lastName: "Falceso3", email: "admin@gmail.com", userName: "user3", password: "user3", userType: 1, status: "Freeze", attemptLogin: 0},
 	];
 	
 const ACCOUNTTABLE = [
@@ -16,12 +16,13 @@ const ACCOUNTTABLE = [
 
 let TRANSACTION = new Object();
 TRANSACTION = [
-    {transactionID: "transaction1", userID: "user1", account: "account1", amount: -1.50, transactionType: "withdrawal", transactionDate: TODAYDATE},
-    {transactionID: "transaction2", userID: "user1", account: "account1", amount: -.50, transactionType: "withdrawal", transactionDate: TODAYDATE},
-    {transactionID: "transaction3", userID: "user1", account: "account1", amount: -2.50, transactionType: "withdrawal", transactionDate: TODAYDATE},
-    {transactionID: "transaction4", userID: "user1", account: "account1", amount: -1.00, transactionType: "withdrawal", transactionDate: TODAYDATE},
-    {transactionID: "transaction1", userID: "user1", account: "account2", amount: -1.00, transactionType: "withdrawal", transactionDate: TODAYDATE},
-    {transactionID: "transaction2", userID: "user1", account: "account2", amount: -1.50, transactionType: "withdrawal", transactionDate: TODAYDATE},
+    {transactionID: "transaction1", userID: "user1", account: "account1", amount: -1.50, transactionType: "withdrawal", transactionDate: '9/17/2023, 7:35:48 PM'},
+    {transactionID: "transaction2", userID: "user1", account: "account1", amount: -.50, transactionType: "withdrawal", transactionDate: '5/17/2023, 8:36:48 PM'},
+    {transactionID: "transaction3", userID: "user1", account: "account1", amount: -2.50, transactionType: "withdrawal", transactionDate: '3/30/2023, 9:35:48 AM'},
+    {transactionID: "transaction4", userID: "user1", account: "account1", amount: -1.00, transactionType: "withdrawal", transactionDate: '8/20/2023, 1:35:48 PM'},
+    {transactionID: "transaction2", userID: "user1", account: "account1", amount: -1.50, transactionType: "withdrawal", transactionDate: '2/15/2023, 5:31:48 PM'},
+    {transactionID: "transaction1", userID: "user1", account: "account2", amount: -1.00, transactionType: "withdrawal", transactionDate: '4/11/2023, 1:15:48 AM'},
+    {transactionID: "transaction2", userID: "user1", account: "account2", amount: -1.50, transactionType: "withdrawal", transactionDate: '2/15/2023, 5:31:48 PM'},
     ];
 
 
@@ -36,18 +37,23 @@ function userAdd(){
 
 //account Dropdown
 function dropDownAccounts(type){
+    let userId = document.getElementById('user-id').value;
     let transactType = document.getElementById(type);
+    let filteredAccount = ACCOUNTTABLE.filter(function (accounts){
+        return accounts.userID == userId;
+    });
+    console.log(filteredAccount);
     document.getElementById(type).innerHTML = "";
     let typeOption;
     typeOption = document.createElement("option");
     typeOption.id = 'none'
     typeOption.text = '-Choose Account-'
     transactType.add(typeOption);
-    let accountTableLength = ACCOUNTTABLE.length;
+    let accountTableLength = filteredAccount.length;
     for (let withacc = 0; withacc < accountTableLength; withacc++) {
         typeOption = document.createElement("option");
-        typeOption.id = ACCOUNTTABLE[withacc].accountID;
-        typeOption.text = ACCOUNTTABLE[withacc].accountName;
+        typeOption.id = filteredAccount[withacc].accountID;
+        typeOption.text = filteredAccount[withacc].accountName;
         transactType.add(typeOption);
     }
 }
@@ -55,19 +61,75 @@ function dropDownAccounts(type){
 
 //update account
 function updateAccountTransact(amount, accountId){
-    /*let filteredAccountUser = ACCOUNTTABLE.filter(function (transact){
-        return transact.userID == userId;
-    });*/
-    let filteredAccount = ACCOUNTTABLE.filter(function (accounts){
+    let newBal = 0;
+    let filteredAccountUser = ACCOUNTTABLE.filter(function (users){
+        return users.userID == document.getElementById('user-id').value;
+    });
+    let filteredAccount = filteredAccountUser.filter(function (accounts){
         return accounts.accountID == accountId;
     });
     filteredAccount.forEach(function (accounts) {
-        let newAmount = accounts.balance + amount;
-        accounts.balance = newAmount;
-        console.log(`Id: ${accountId}`);
-        console.log(`Amount: ${accounts.balance}`);
+        //newAmount = accounts.balance + newAmount;
+        newBal = accounts.balance;
     });
-    viewTableuser();
+    newBal = newBal + amount;
+    console.log('newBal: ' + amount);
+    filteredAccount.forEach(function (accounts) {
+        //newAmount = accounts.balance + newAmount;
+        accounts.balance = newBal;
+    });
+    viewTableUser();
+}
+
+//withdraw denominations
+function withdrawdenom(five, ten, twentyfive, element){
+    let select = element.options;
+    let account = select[select.selectedIndex].id;
+    let balance = "", floatBalance = "";
+    if(account !== 'none'){
+        console.log(account);
+        let filteredAccountUser = ACCOUNTTABLE.filter(function (accounts){
+            return accounts.userID == document.getElementById('user-id').value;
+        });
+        let filteredAccount = filteredAccountUser.filter(function (accounts){
+            return accounts.accountID == account;
+        });
+        filteredAccount.forEach(function (accounts) {
+            balance = accounts.balance;
+        });
+        floatBalance = parseFloat(balance).toFixed(2);
+        let censts25mod = Math.round((floatBalance % .25) * 100);
+        let censts10mod = Math.round((floatBalance % .10) * 100);
+        let censts05mod = Math.round((floatBalance % .05) * 100);
+
+        let cents25 = floatBalance / .25;
+        let cents10 = floatBalance / .10;
+        let cents05 = floatBalance / .05;
+
+        let cents25final = cents25;
+        let cents10final = cents10;
+        let cents05final = cents05;
+
+        if(censts25mod>=25)
+        cents25final = cents25 - 1;
+        if(censts10mod>=25)
+        cents10final = cents10 - 1;
+        if(censts05mod>=25)
+        cents05final = cents05 - 1;
+        console.log(cents25final);
+        console.log(cents10final);
+        console.log(cents05final);
+
+        document.getElementById('withdraw-twentyfive').innerHTML = "";
+        document.getElementById('withdraw-ten').innerHTML = "";
+        document.getElementById('withdraw-five').innerHTML = "";
+
+        document.getElementById('withdraw-balance').innerHTML = `Available Balance: ${balance}`;
+        document.getElementById('withdraw-twentyfive').innerHTML = `25 cents: ${cents25final}`;
+        document.getElementById('withdraw-ten').innerHTML = `10 cents: ${cents10final}`;
+        document.getElementById('withdraw-five').innerHTML = `5 cents: ${cents05final}`;
+    }
+    
 }
 
 document.getElementById('add-withdraw').addEventListener('click', function(){
@@ -112,13 +174,13 @@ window.onclick = function(event) {
 
 //add transaction
 function addTransaction(amount, transactType, accountId){
-    let filteredTransactionsUser = TRANSACTION.filter(function (transact){
-        return transact.userID == document.getElementById("user-id").value;;
+    let filteredTransactionsUser = TRANSACTION.filter(function (users){
+        return users.userID == document.getElementById("user-id").value;;
     });
-    let filteredTransactions = TRANSACTION.filter(function (transact){
-        return transact.account == accountId;
+    let filteredTransactions = filteredTransactionsUser.filter(function (users){
+        return users.account == accountId;
     });
-    let countTransaction = filteredTransactionsUser.length + 1;
+    let countTransaction = filteredTransactions.length + 1;
     let datetoday = new Date().toLocaleString();
     let newTransaction = {
         transactionID: 'transaction'+countTransaction,
@@ -127,7 +189,7 @@ function addTransaction(amount, transactType, accountId){
         amount: amount,
         transactionDate: datetoday,
     };
-    //TRANSACTION.push(newTransaction);
+    TRANSACTION.push(newTransaction);
 }
 
 //view Receipt after transaction
@@ -230,15 +292,14 @@ document.getElementById('submit-withdraw').onclick = function() {
     let select = document.getElementById("withdraw-account").options;
     let account = select[select.selectedIndex].id;
     let transactType = "withdrawal";
-    let amountValue = parseFloat(amount);
     if(account == 'none'){
         alert('Please Select an Account.');
     }
-    else if(amountValue){
-        if(isNaN(amountValue)){
+    else if(amount){
+        if(isNaN(amount)){
             alert('Invalid amount.');
         }
-        else if(amountValue<0){
+        else if(amount<0){
             alert('Amount sholud not be less than 0.');
         }
         else{
@@ -246,12 +307,13 @@ document.getElementById('submit-withdraw').onclick = function() {
                 return false;
             }
             else{
+                let amountValue = parseFloat(amount).toFixed(2);
                 let withdrawAmount = amountValue * -1;
                 addTransaction(withdrawAmount, transactType, account);
                 updateAccountTransact(withdrawAmount, account);
                 let transactInfo = getTransactionInfo(account, amountValue);
                 console.log(transactInfo);
-                viewReceipt(transactInfo, 'Deposit Complete');
+                viewReceipt(transactInfo, 'Withdrawal Complete');
                 document.getElementById('modal-withdraw').style.display = "none";
             }
         }
@@ -266,15 +328,14 @@ document.getElementById('submit-deposit').onclick = function() {
     let select = document.getElementById("deposit-account").options;
     let account = select[select.selectedIndex].id;
     let transactType = "deposit";
-    let amountValue = parseFloat(amount);
     if(account == 'none'){
         alert('Please Select an Account.');
     }
-    else if(amountValue){
-        if(isNaN(amountValue)){
+    else if(amount){
+        if(isNaN(amount)){
             alert('Invalid amount.');
         }
-        else if(amountValue<0){
+        else if(amount<0){
             alert('Amount sholud not be less than 0.');
         }
         else{
@@ -282,6 +343,7 @@ document.getElementById('submit-deposit').onclick = function() {
                 return false;
             }
             else{
+                let amountValue = parseFloat(amount).toFixed(2);
                 addTransaction(amountValue, transactType, account);
                 updateAccountTransact(amountValue, account);
                 let transactInfo = getTransactionInfo(account, amountValue);
@@ -302,18 +364,17 @@ document.getElementById('submit-transfer').onclick = function() {
     let accountfrom = selectfrom[selectfrom.selectedIndex].id;
     let accountto = selectto[selectto.selectedIndex].id;
     let transactType = "transfer";
-    let amountValue = parseFloat(amount);
     if(accountfrom == 'none' || accountto == 'none'){
         alert('Please Select an Account.');
     }
     else if(accountfrom == accountto){
         alert('You are transfering to the same account.');
     }
-    else if(amountValue){
-        if(isNaN(amountValue)){
+    else if(amount){
+        if(isNaN(amount)){
             alert('Invalid amount.');
         }
-        else if(amountValue<0){
+        else if(amount<0){
             alert('Amount sholud not be less than 0.');
         }
         else{
@@ -321,6 +382,7 @@ document.getElementById('submit-transfer').onclick = function() {
                 return false;
             }
             else{
+                let amountValue = parseFloat(amount).toFixed(2);
                 let withamount = amountValue * -1
                 addTransaction(withamount, transactType, accountfrom);
                 addTransaction(amountValue, transactType, accountto);
@@ -374,15 +436,8 @@ function viewAccount(id, name, balance, status){
     let filteredTransactions = TRANSACTION.filter(function (transact){
         return transact.account == id;
     });
-    let count = 0;
-    filteredTransactions.forEach(function (transaction, index) {
-        let newTransaction = {
-            accountName: accountName,
-            fullName: fullName,
-            datetoday: datetoday,
-            amount: amount,
-            remBalance: remBalance
-        }
+    let filteredTransactionsSlice = filteredTransactions.slice(0,2);
+    filteredTransactionsSlice.forEach(function (transaction) {
         /*console.log(`No. ${index + 1}:`);
         console.log(`Id: ${transaction.transactionID}`);
         console.log(`Type: ${transaction.transactionType}`);
@@ -391,8 +446,7 @@ function viewAccount(id, name, balance, status){
         console.log("--------------");*/
         document.getElementById("container-transaction-table-tbody").innerHTML+= `<tr class="container-accounts-details">` +
         `<td class="column1">${transaction.transactionType}</td><td class="column2">${transaction.amount}</td>` +
-        `<td class="column3">${transaction.transactionDate}</td><td class="column4">`+
-        `<button type="button" id="view-account" onclick="getTransactionInfoAccount(newTransaction , transaction.transactionType)">View</button></td></tr>`
+        `<td class="column3">${transaction.transactionDate}</td></tr>`
     });
     document.getElementById('account-id').innerHTML = id;
     document.getElementById('account-name').innerHTML = name;
@@ -401,6 +455,100 @@ function viewAccount(id, name, balance, status){
 
 document.getElementById('close-account').onclick = function() {
     document.getElementById('modal-account').style.display = "none";
+}
+
+//view user ni admin
+document.getElementById('admin-view1').addEventListener('click', function(){
+    let id = document.getElementById("admin-id1").textContent;
+    console.log(id);
+    viewAccountAdmin(id);
+    //document.getElementById('modal-withdrawal').style.display = "block";
+});
+document.getElementById('admin-view2').addEventListener('click', function(){
+    let id = document.getElementById("admin-id2").textContent;
+    console.log(id);
+    viewAccountAdmin(id);
+    //document.getElementById('modal-withdrawal').style.display = "block";
+});
+document.getElementById('admin-view3').addEventListener('click', function(){
+    let id = document.getElementById("admin-id3").textContent;
+    console.log(id);
+    viewAccountAdmin(id);
+    //document.getElementById('modal-withdrawal').style.display = "block";
+});
+document.getElementById('admin-view4').addEventListener('click', function(){
+    let id = document.getElementById("admin-id4").textContent;
+    console.log(id);
+    viewAccountAdmin(id);
+    //document.getElementById('modal-withdrawal').style.display = "block";
+});
+document.getElementById('admin-view5').addEventListener('click', function(){
+    let id = document.getElementById("admin-id5").textContent;
+    console.log(id);
+    viewAccountAdmin(id);
+    //document.getElementById('modal-withdrawal').style.display = "block";
+});
+
+document.getElementById('close-account-admin').onclick = function() {
+    document.getElementById('modal-account-admin').style.display = "none";
+}
+document.getElementById('cancel-account-edit-admin').onclick = function() {
+    document.getElementById('modal-account-admin').style.display = "none";
+}
+
+function viewAccountAdmin(id){
+    document.getElementById('modal-account-admin').style.display = "block";
+    document.getElementById("account-edit-id-admin").value = id;
+    let status = '';
+    let filteredUsers = USERTABLE.filter(function (users){
+        return users.userID == id;
+    });
+    filteredUsers.forEach(function (users) {
+        document.getElementById("account-edit-first-name-admin").value = users.firstName;
+        document.getElementById("account-edit-last-name-admin").value = users.lastName;
+        document.getElementById("account-edit-email-admin").value = users.email;
+        document.getElementById("account-edit-status-admin").innerHTML = `Status: ${users.status}`;
+        status = users.status;
+    });
+    if(status=='Freeze'){
+        document.getElementById("submit-account-status-admin").innerHTML = 'Unfreeze';
+    }
+    else{
+        document.getElementById("submit-account-status-admin").innerHTML = 'Freeze';
+    }
+}
+
+document.getElementById('submit-account-status-admin').onclick = function() {
+    let filteredUser = USERTABLE.filter(function (users){
+        return users.userID == document.getElementById("account-edit-id-admin").value;
+    });
+    filteredUser.forEach(function (users) {
+        users.status = document.getElementById('submit-account-status-admin').textContent;
+    });
+    alert('User '+ document.getElementById('submit-account-status-admin').textContent);
+    viewTableAdmin();
+    document.getElementById('modal-account-admin').style.display = "none";
+}
+
+document.getElementById('submit-account-edit-admin').onclick = function() {
+    if(document.getElementById('account-edit-first-name-admin').value == '' && 
+    document.getElementById('account-edit-last-name-admin').value == '' &&
+    document.getElementById('account-edit-email-admin').value == ''){
+        alert('Please fill in all fields.');
+    }
+    else{
+        let filteredUser = USERTABLE.filter(function (users){
+            return users.userID == document.getElementById("account-edit-id-admin").value;
+        });
+        filteredUser.forEach(function (users) {
+            users.firstName = document.getElementById('account-edit-first-name-admin').value;
+            users.lastName = document.getElementById('account-edit-last-name-admin').value;
+            users.email = document.getElementById('account-edit-email-admin').value;
+        });
+        viewTableAdmin();
+        alert('User updated.');
+        document.getElementById('modal-account-admin').style.display = "none";
+    }
 }
 
 //create account pwede to sa pag deposit kasi 5 centavo yung need
@@ -420,26 +568,26 @@ document.getElementById('submit-account-create').onclick = function() {
     let filteredUser = ACCOUNTTABLE.filter(function (accounts){
         return accounts.userID == document.getElementById("user-id").value;
     });
-    let amountdeposit = parseFloat(document.getElementById('account-create-amount').value);
+    let amountdeposit = parseFloat(document.getElementById('account-create-amount').value).toFixed(2);
     if(filteredUser.length == 3){
         alert('You have reach the limited Account per user.');
     }
     else if(document.getElementById('account-create-name').value == '' && document.getElementById('account-create-amount').value == ''){
         alert('Please fill in all fields.');
     }
-    //else if(!isNaN(amountdeposit)){
-    //    alert('Please enter only amount in amount.');
-    //}
+    else if(isNaN(document.getElementById('account-create-amount').value)){
+        alert('Please enter only amount in amount.');
+    }
     else{
         let newAccount = {
             accountID: 'account'+filteredUser.length + 1,
             accountName: document.getElementById('account-create-name').value,
             userID: document.getElementById("user-id").value,
-            balance: document.getElementById('account-create-amount').value,
+            balance: amountdeposit,
             status: 'Active',
         };
         ACCOUNTTABLE.push(newAccount);
-        viewTableuser();
+        viewTableUser();
         alert('Account Created');
         document.getElementById('modal-account-create').style.display = 'none';
     }
@@ -475,7 +623,7 @@ document.getElementById('submit-account-edit').onclick = function() {
         filteredAccount.forEach(function (accounts) {
             accounts.accountName = document.getElementById("account-edit-name").value;
         });
-        viewTableuser();
+        viewTableUser();
         alert('Account updated.');
         document.getElementById('modal-account-edit').style.display = "none";
     }
@@ -525,29 +673,128 @@ document.getElementById('return-user-edit').onclick = function() {
     document.getElementById('profile-area').style.display = 'none';
 }
 
-    
+//open profile admin
+document.getElementById('profile-update-admin').onclick = function() {
+    document.getElementById('transaction-area-admin').style.display = 'none';
+    document.getElementById('profile-area-admin').style.display = 'block';
+    document.getElementById('user-id-edit-admin').value = document.getElementById('admin-id').value;
+    let filteredUser = USERTABLE.filter(function (users){
+        return users.userID == document.getElementById('user-id-edit-admin').value;
+    });
+    filteredUser.forEach(function (users) {
+        console.log(`password: ${users.email}`);
+        document.getElementById('first-name-edit-admin').value = users.firstName;
+        document.getElementById('last-name-edit-admin').value = users.lastName;
+        document.getElementById('email-address-edit-admin').value = users.email;
+        console.log(`password: ${users.email}`);
+    });
+}
+
+//profile update user admin
+document.getElementById('submit-user-edit-admin').addEventListener('click', function(){
+    if(document.getElementById("first-name-edit").value == '' && document.getElementById("last-name-edit").value == '' &&
+    document.getElementById("email-address-edit").value == ''){
+        alert('Please fill up all field.');
+    }
+    else{
+        console.log(document.getElementById("user-id-edit-admin").value);
+        let filteredUser = USERTABLE.filter(function (users){
+            return users.userID == document.getElementById("user-id-edit").value;
+        });
+        filteredUser.forEach(function (users) {
+            users.firstName = document.getElementById("first-name-edit-admin").value;
+            users.lastName = document.getElementById("last-name-edit-admin").value;
+            users.email = document.getElementById("email-address-edit-admin").value;
+        });
+        alert('Update Success.');
+        document.getElementById('transaction-area-admin').style.display = 'block';
+        document.getElementById('profile-area-admin').style.display = 'none';
+    }
+});
+
+//update user admin
+document.getElementById('submit-user-edit-admin').addEventListener('click', function(){
+    if(document.getElementById("first-name-edit").value == '' && document.getElementById("last-name-edit").value == '' &&
+    document.getElementById("email-address-edit").value == ''){
+        alert('Please fill up all field.');
+    }
+    else{
+        console.log(document.getElementById("user-id-edit-admin").value);
+        let filteredUser = USERTABLE.filter(function (users){
+            return users.userID == document.getElementById("user-id-edit").value;
+        });
+        filteredUser.forEach(function (users) {
+            users.firstName = document.getElementById("first-name-edit-admin").value;
+            users.lastName = document.getElementById("last-name-edit-admin").value;
+            users.email = document.getElementById("email-address-edit-admin").value;
+        });
+        alert('Update Success.');
+        document.getElementById('transaction-area-admin').style.display = 'block';
+        document.getElementById('profile-area-admin').style.display = 'none';
+    }
+});
+
+document.getElementById('return-user-edit-admin').onclick = function() {
+    document.getElementById('transaction-area-admin').style.display = 'block';
+    document.getElementById('profile-area-admin').style.display = 'none';
+}
+
+//login
 document.getElementById('submit-login').addEventListener('click', function(){
-    let password = '', userId = '', fullname = '';
-    if(document.getElementById('login-username').value !== ''){
+    let password = '', userId = '', fullname = '', usertype = '', attempt = '', status = '';
+    if(document.getElementById('login-username').value !== '' && document.getElementById('login-password').value){
         let filteredUser = USERTABLE.filter(function (users){
             return users.userName == document.getElementById("login-username").value;
         });
         filteredUser.forEach(function (users) {
             userId = users.userID;
             password = users.password;
-            console.log(`userName: ${userId}`);
-            console.log(`password: ${password}`);
+            usertype = users.userType;
+            attempt = users.attemptLogin;
+            status = users.status;
+            fullname = users.firstName + "" + users.lastName;
         });
+        console.log(attempt);
         if(document.getElementById('login-password').value === password){
-            document.getElementById('login-area').style.display = 'none';
-            document.getElementById('transaction-area').style.display = 'block';
-            document.getElementById('user-id').value = userId;
-            viewTableuser();
+            filteredUser.forEach(function (users) {
+                users.attemptLogin = 0;
+            });
+            if(status=='Freeze'){
+                alert('Your account is Frozen. Please contact your administrator to unfreeze your account'); 
+            }
+            else{
+                document.getElementById('login-area').style.display = 'none';
+                if(usertype === 1){
+                    document.getElementById('profile-update').innerHTML = "";
+                    document.getElementById('profile-update').innerHTML = `Hello, ${fullname}`;
+                    document.getElementById('user-id').value = userId;
+                    document.getElementById('transaction-area').style.display = 'block';
+                    viewTableUser();
+                }
+                else if(usertype === 0){
+                    document.getElementById('profile-update-admin').innerHTML = "";
+                    document.getElementById('profile-update-admin').innerHTML = `Hello, ${fullname}`;
+                    document.getElementById('admin-id').value = userId;
+                    document.getElementById('transaction-area-admin').style.display = 'block';
+                }
+            }
             //document.getElementById('user-greetings').innerHTML = "WELCOME " + ; add ng function sa user table para iview yung full name
         }
-        else{
-            alert('Wrong Username or Password.');
+        else if(attempt >= 3){
+            filteredUser.forEach(function (users) {
+                users.status = 'Freeze';
+            });
+            alert('Your account is Frozen. Please contact your administrator to unfreeze your account'); 
         }
+        else{
+            filteredUser.forEach(function (users) {
+                users.attemptLogin += 1;
+            });
+            alert('Wrong Username or Password.'); 
+        }
+    }
+    else{
+        alert('Please fill in all fields.');
     }
     /*if (document.getElementById('username').value == 'admin' && document.getElementById('password').value == 'admin'){
         document.getElementById('login-area').style.display = 'none';
@@ -564,6 +811,12 @@ document.getElementById('submit-login').addEventListener('click', function(){
 });
 
 document.getElementById('change-register').addEventListener('click', function(){
+    document.getElementById('first-name').value = '';
+    document.getElementById('last-name').value = '';
+    document.getElementById('email-address').value = '';
+    document.getElementById('user-name').value = '';
+    document.getElementById('password').value = '';
+    document.getElementById('confirm-password').value = '';
     document.getElementById('login-area').style.display = 'none';
     document.getElementById('transaction-area').style.display = 'none';
     document.getElementById('registration-area').style.display = 'block';
@@ -578,14 +831,14 @@ document.getElementById('return-register').addEventListener('click', function(){
 
 });
 
-//register user
+//register user user
 document.getElementById('submit-register').addEventListener('click', function(){
     if(document.getElementById("first-name").value == '' && document.getElementById("last-name").value == '' &&
     document.getElementById("email-address").value == '' && document.getElementById("user-name").value == '' &&
     document.getElementById("password").value == '' && document.getElementById("confirm-password").value == ''){
         alert('Please fill up all field.');
     }
-    if(document.getElementById("password").value !== document.getElementById("confirm-password").value){
+    else if(document.getElementById("password").value !== document.getElementById("confirm-password").value){
         alert('Password does not match.');
     }
     else{
@@ -604,14 +857,65 @@ document.getElementById('submit-register').addEventListener('click', function(){
                 email: document.getElementById("email-address").value,
                 userName: document.getElementById("user-name").value,
                 password: document.getElementById("password").value,
-                userType: 0,
+                userType: 1,
             };
             USERTABLE.push(newUser);
+            alert('User Registered Successfully.');
+            document.getElementById("registration-area").style.display = 'none';
+            document.getElementById("login-area").style.display = 'block';
         }
     }
 });
 
-//log out
+document.getElementById('add-user').addEventListener('click', function(){
+    document.getElementById('transaction-area-admin').style.display = 'none';
+    document.getElementById('registration-area-admin').style.display = 'block';
+
+});
+
+//close register
+document.getElementById('return-register-admin').addEventListener('click', function(){
+    document.getElementById('transaction-area-admin').style.display = 'block';
+    document.getElementById('registration-area-admin').style.display = 'none';
+
+});
+
+//register user admin
+document.getElementById('submit-register-admin').addEventListener('click', function(){
+    if(document.getElementById("first-name-admin").value == '' && document.getElementById("last-name-admin").value == '' &&
+    document.getElementById("email-address-admin").value == '' && document.getElementById("user-name-admin").value == '' &&
+    document.getElementById("password-admin").value == '' && document.getElementById("confirm-password-admin").value == ''){
+        alert('Please fill up all field.');
+    }
+    else if(document.getElementById("password-admin").value !== document.getElementById("confirm-password-admin").value){
+        alert('Password does not match.');
+    }
+    else{
+        let filteredUser = USERTABLE.filter(function (users){
+            return users.userName == document.getElementById("user-name-admin").value;
+        });
+        if(filteredUser.length >0){
+            alert('Username already taken.');
+        }
+        else{
+            let userTotal = USERTABLE.length;
+            let newUser = {
+                userID: 'user'+userTotal,
+                firstName: document.getElementById("first-name-admin").value,
+                lastName: document.getElementById("last-name-admin").value,
+                email: document.getElementById("email-address-admin").value,
+                userName: document.getElementById("user-name-admin").value,
+                password: document.getElementById("password-admin").value,
+                userType: 0,
+            };
+            USERTABLE.push(newUser);
+            document.getElementById("registration-area-admin").style.display = 'none';
+            document.getElementById("transaction-area").style.display = 'block';
+        }
+    }
+});
+
+//log out-user
 document.getElementById('log-out').addEventListener('click', function(){
     document.getElementById("user-id").value = '';
     document.getElementById("user-id-edit").value = '';
@@ -621,10 +925,21 @@ document.getElementById('log-out').addEventListener('click', function(){
     document.getElementById('transaction-area').style.display = 'none';
 });
 
-//delete before presentation
-viewTableuser();
+//log out-admin
+document.getElementById('log-out-admin').addEventListener('click', function(){
+    document.getElementById("admin-id").value = '';
+    document.getElementById("user-id-edit").value = '';
+    document.getElementById("login-username").value = '';
+    document.getElementById("login-password").value = '';
+    document.getElementById('login-area').style.display = 'block';
+    document.getElementById('transaction-area-admin').style.display = 'none';
+});
 
-function viewTableuser(){
+//delete before presentation
+viewTableUser();
+
+//user table
+function viewTableUser(){
     console.log('userId:::::'+document.getElementById("user-id").value);
     let filteredAccount = ACCOUNTTABLE.filter(function (accounts){
         return accounts.userID == document.getElementById("user-id").value;
@@ -658,6 +973,8 @@ function viewTableuser(){
         }
         i++;
     }
+
+    
     /*
     for (let i = 0; i < ACCOUNTTABLE.length; i++) {
     document.getElementById("container-accounts-table-tbody").innerHTML+= `<tr class="container-accounts-details"><td class="column1">`+
@@ -666,4 +983,55 @@ function viewTableuser(){
         console.log(`<button id="view-account${[i]}" onclick="viewAccount(${ACCOUNTTABLE[i].accountID})">View</button></td></tr>`);
     }
     */
+}
+
+viewTableAdmin();
+
+function viewTableAdmin(){
+    console.log('userId:::::'+document.getElementById("user-id").value);
+    let accountTableLength = USERTABLE.length;
+    let i = 0;
+    document.getElementById("admin-view1").style.display = 'none';
+    document.getElementById("admin-view2").style.display = 'none';
+    document.getElementById("admin-view3").style.display = 'none';
+    document.getElementById("admin-view4").style.display = 'none';
+    document.getElementById("admin-view5").style.display = 'none';
+    while(i<accountTableLength){
+        if(i==0){
+            document.getElementById("admin-id1").innerHTML = `${USERTABLE[i].userID}`;
+            document.getElementById("admin-name1").innerHTML = `${USERTABLE[i].firstName} ${USERTABLE[i].lastName}`;
+            document.getElementById("admin-username1").innerHTML = `${USERTABLE[i].userName}`;
+            document.getElementById("admin-status1").innerHTML = `${USERTABLE[i].status}`;
+            document.getElementById("admin-view1").style.display = 'block';
+        }
+        if(i==1){
+            document.getElementById("admin-id2").innerHTML = `${USERTABLE[i].userID}`;
+            document.getElementById("admin-name2").innerHTML = `${USERTABLE[i].firstName} ${USERTABLE[i].lastName}`;
+            document.getElementById("admin-username2").innerHTML = `${USERTABLE[i].userName}`;
+            document.getElementById("admin-status2").innerHTML = `${USERTABLE[i].status}`;
+            document.getElementById("admin-view2").style.display = 'block';
+        }
+        if(i==2){
+            document.getElementById("admin-id3").innerHTML = `${USERTABLE[i].userID}`;
+            document.getElementById("admin-name3").innerHTML = `${USERTABLE[i].firstName} ${USERTABLE[i].lastName}`;
+            document.getElementById("admin-username3").innerHTML = `${USERTABLE[i].userName}`;
+            document.getElementById("admin-status3").innerHTML = `${USERTABLE[i].status}`;
+            document.getElementById("admin-view3").style.display = 'block';
+        }
+        if(i==3){
+            document.getElementById("admin-id4").innerHTML = `${USERTABLE[i].userID}`;
+            document.getElementById("admin-name4").innerHTML = `${USERTABLE[i].firstName} ${USERTABLE[i].lastName}`;
+            document.getElementById("admin-username4").innerHTML = `${USERTABLE[i].userName}`;
+            document.getElementById("admin-status4").innerHTML = `${USERTABLE[i].status}`;
+            document.getElementById("admin-view4").style.display = 'block';
+        }
+        if(i==4){
+            document.getElementById("admin-id5").innerHTML = `${USERTABLE[i].userID}`;
+            document.getElementById("admin-name5").innerHTML = `${USERTABLE[i].firstName} ${USERTABLE[i].lastName}`;
+            document.getElementById("admin-username5").innerHTML = `${USERTABLE[i].userName}`;
+            document.getElementById("admin-status5").innerHTML = `${USERTABLE[i].status}`;
+            document.getElementById("admin-view5").style.display = 'block';
+        }
+        i++;
+    }
 }
