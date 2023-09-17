@@ -1,4 +1,4 @@
-const DATETODAY = new Date().toLocaleString();
+const TODAYDATE = new Date().toLocaleString();
 
 const USERTABLE = [
 	{userID: "admin", firstName: "Neil", lastName: "Administrator", email: "admin@gmail.com", userName: "admin", password: "admin", userType: 0},
@@ -16,12 +16,12 @@ const ACCOUNTTABLE = [
 
 let TRANSACTION = new Object();
 TRANSACTION = [
-    {transactionID: "transaction1", userID: "user1", account: "account1", amount: -1.50, transactionType: "withdrawal", transactionDate: DATETODAY},
-    {transactionID: "transaction2", userID: "user1", account: "account1", amount: -.50, transactionType: "withdrawal", transactionDate: DATETODAY},
-    {transactionID: "transaction3", userID: "user1", account: "account1", amount: -2.50, transactionType: "withdrawal", transactionDate: DATETODAY},
-    {transactionID: "transaction4", userID: "user1", account: "account1", amount: -1.00, transactionType: "withdrawal", transactionDate: DATETODAY},
-    {transactionID: "transaction1", userID: "user1", account: "account2", amount: -1.00, transactionType: "withdrawal", transactionDate: DATETODAY},
-    {transactionID: "transaction2", userID: "user1", account: "account2", amount: -1.50, transactionType: "withdrawal", transactionDate: DATETODAY},
+    {transactionID: "transaction1", userID: "user1", account: "account1", amount: -1.50, transactionType: "withdrawal", transactionDate: TODAYDATE},
+    {transactionID: "transaction2", userID: "user1", account: "account1", amount: -.50, transactionType: "withdrawal", transactionDate: TODAYDATE},
+    {transactionID: "transaction3", userID: "user1", account: "account1", amount: -2.50, transactionType: "withdrawal", transactionDate: TODAYDATE},
+    {transactionID: "transaction4", userID: "user1", account: "account1", amount: -1.00, transactionType: "withdrawal", transactionDate: TODAYDATE},
+    {transactionID: "transaction1", userID: "user1", account: "account2", amount: -1.00, transactionType: "withdrawal", transactionDate: TODAYDATE},
+    {transactionID: "transaction2", userID: "user1", account: "account2", amount: -1.50, transactionType: "withdrawal", transactionDate: TODAYDATE},
     ];
 
 
@@ -52,28 +52,9 @@ function dropDownAccounts(type){
     }
 }
 
-//add transaction
-function addTransaction(amount, transactType, accountId, userId){
-    /*let filteredTransactionsUser = TRANSACTION.filter(function (transact){
-        return transact.userID == userId;
-    });*/
-    let filteredTransactions = TRANSACTION.filter(function (transact){
-        return transact.account == accountId;
-    });
-    let countTransaction = filteredTransactions.length + 1;
-    //console.log('amount'+filteredTransactions.amount+' transactType'+transactType+' accountId'+accountId);
-    let newTransaction = {
-        transactionID: 'transaction'+countTransaction,
-        account: accountId,
-        transactionType: transactType,
-        amount: amount,
-        transactionDate: DATETODAY,
-    };
-    TRANSACTION.push(newTransaction);
-}
 
 //update account
-function updateAccountTransact(amount, accountId, userId){
+function updateAccountTransact(amount, accountId){
     /*let filteredAccountUser = ACCOUNTTABLE.filter(function (transact){
         return transact.userID == userId;
     });*/
@@ -129,6 +110,120 @@ window.onclick = function(event) {
     }
 }
 
+//add transaction
+function addTransaction(amount, transactType, accountId){
+    let filteredTransactionsUser = TRANSACTION.filter(function (transact){
+        return transact.userID == document.getElementById("user-id").value;;
+    });
+    let filteredTransactions = TRANSACTION.filter(function (transact){
+        return transact.account == accountId;
+    });
+    let countTransaction = filteredTransactionsUser.length + 1;
+    let datetoday = new Date().toLocaleString();
+    let newTransaction = {
+        transactionID: 'transaction'+countTransaction,
+        account: accountId,
+        transactionType: transactType,
+        amount: amount,
+        transactionDate: datetoday,
+    };
+    //TRANSACTION.push(newTransaction);
+}
+
+//view Receipt after transaction
+function viewReceipt(transactInfo, transactionType){
+    document.getElementById('modal-receipt').style.display = "block";
+    document.getElementById('receipt-title').textContent = transactionType;
+    document.getElementById('receipt-account').textContent = transactInfo.accountName;
+    document.getElementById('receipt-name').textContent = transactInfo.fullName;
+    document.getElementById('receipt-date').textContent = transactInfo.datetoday;
+    document.getElementById('receipt-amount').textContent = transactInfo.amount;
+    document.getElementById('receipt-balance').textContent = transactInfo.remBalance;
+}
+
+document.getElementById('receipt-close-x').onclick = function() {
+    document.getElementById('modal-receipt').style.display = "none";
+}
+
+//view Receipt in Account table
+function viewReceiptAccount(transactInfo, transactionType){
+    document.getElementById('modal-receipt').style.display = "block";
+    document.getElementById('receipt-title').textContent = transactionType;
+    document.getElementById('receipt-account').textContent = transactInfo.accountName;
+    document.getElementById('receipt-name').textContent = transactInfo.fullName;
+    document.getElementById('receipt-date').textContent = transactInfo.datetoday;
+    document.getElementById('receipt-amount').textContent = transactInfo.amount;
+    document.getElementById('receipt-balance').textContent = transactInfo.remBalance;
+}
+
+//get transaction info
+function getTransactionInfoAccount(transactionId, accountId, userId, amount, date){
+    let datetoday = new Date().toLocaleString();
+    let fullName = "", accountID = "", accountName = "", remBalance = "";
+    let filteredUser = USERTABLE.filter(function (users){
+        return users.userID == document.getElementById("user-id").value;
+    });
+    filteredUser.forEach(function (users) {
+        fullName = users.firstName + " " + users.lastName;
+    });
+    let filteredAccount = ACCOUNTTABLE.filter(function (accounts){
+        return accounts.userID == document.getElementById("user-id").value;
+    });
+    filteredAccount.forEach(function (accounts) {
+        accountID = accounts.accountID;
+    });
+    let filteredAccountName = filteredAccount.filter(function (accounts){
+        return accounts.accountID == accountId;
+    });
+    filteredAccountName.forEach(function (accounts) {
+        accountName = accounts.accountName;
+        remBalance = accounts.balance;
+    });
+    console.log('accountName'+accountName+' fullName'+fullName+' datetoday'+datetoday+' amount'+amount+' remBalance'+remBalance);
+    let newTransactionInfo = {
+        accountName: accountName,
+        fullName: fullName,
+        datetoday: datetoday,
+        amount: amount,
+        remBalance: remBalance,
+    };
+    return newTransactionInfo;
+}
+
+//get transaction info
+function getTransactionInfo(accountId, amount){
+    let datetoday = new Date().toLocaleString();
+    let fullName = "", accountID = "", accountName = "", remBalance = "";
+    let filteredUser = USERTABLE.filter(function (users){
+        return users.userID == document.getElementById("user-id").value;
+    });
+    filteredUser.forEach(function (users) {
+        fullName = users.firstName + " " + users.lastName;
+    });
+    let filteredAccount = ACCOUNTTABLE.filter(function (accounts){
+        return accounts.userID == document.getElementById("user-id").value;
+    });
+    filteredAccount.forEach(function (accounts) {
+        accountID = accounts.accountID;
+    });
+    let filteredAccountName = filteredAccount.filter(function (accounts){
+        return accounts.accountID == accountId;
+    });
+    filteredAccountName.forEach(function (accounts) {
+        accountName = accounts.accountName;
+        remBalance = accounts.balance;
+    });
+    console.log('accountName'+accountName+' fullName'+fullName+' datetoday'+datetoday+' amount'+amount+' remBalance'+remBalance);
+    let newTransactionInfo = {
+        accountName: accountName,
+        fullName: fullName,
+        datetoday: datetoday,
+        amount: amount,
+        remBalance: remBalance,
+    };
+    return newTransactionInfo;
+}
+
 //withdrawal
 document.getElementById('submit-withdraw').onclick = function() {
     let amount = document.getElementById("withdraw-amount").value;
@@ -151,10 +246,12 @@ document.getElementById('submit-withdraw').onclick = function() {
                 return false;
             }
             else{
-                amountValue *= -1;
-                addTransaction(amountValue, transactType, account);
-                updateAccount(amountValue, account);
-                alert('Withdrawal Complete.');
+                let withdrawAmount = amountValue * -1;
+                addTransaction(withdrawAmount, transactType, account);
+                updateAccountTransact(withdrawAmount, account);
+                let transactInfo = getTransactionInfo(account, amountValue);
+                console.log(transactInfo);
+                viewReceipt(transactInfo, 'Deposit Complete');
                 document.getElementById('modal-withdraw').style.display = "none";
             }
         }
@@ -186,8 +283,9 @@ document.getElementById('submit-deposit').onclick = function() {
             }
             else{
                 addTransaction(amountValue, transactType, account);
-                updateAccount(amountValue, account);
-                alert('Deposit Complete.');
+                updateAccountTransact(amountValue, account);
+                let transactInfo = getTransactionInfo(account, amountValue);
+                viewReceipt(transactInfo, 'Withdrawal Complete');
                 document.getElementById('modal-deposit').style.display = "none";
             }
         }
@@ -226,9 +324,10 @@ document.getElementById('submit-transfer').onclick = function() {
                 let withamount = amountValue * -1
                 addTransaction(withamount, transactType, accountfrom);
                 addTransaction(amountValue, transactType, accountto);
-                updateAccount(withamount, accountfrom);
-                updateAccount(amountValue, accountto);
-                alert('Transfer Complete.');
+                updateAccountTransact(withamount, accountfrom);
+                updateAccountTransact(amountValue, accountto);
+                let transactInfofrom = getTransactionInfo(accountfrom, amountValue);
+                viewReceipt(transactInfofrom, 'Transfer Complete');
                 document.getElementById('modal-transfer').style.display = "none";
             }
         }
@@ -275,16 +374,25 @@ function viewAccount(id, name, balance, status){
     let filteredTransactions = TRANSACTION.filter(function (transact){
         return transact.account == id;
     });
+    let count = 0;
     filteredTransactions.forEach(function (transaction, index) {
-        console.log(`No. ${index + 1}:`);
+        let newTransaction = {
+            accountName: accountName,
+            fullName: fullName,
+            datetoday: datetoday,
+            amount: amount,
+            remBalance: remBalance
+        }
+        /*console.log(`No. ${index + 1}:`);
         console.log(`Id: ${transaction.transactionID}`);
         console.log(`Type: ${transaction.transactionType}`);
         console.log(`Amount: ${transaction.amount}`);
         console.log(`Date: ${transaction.transactionDate}`);
-        console.log("--------------");
+        console.log("--------------");*/
         document.getElementById("container-transaction-table-tbody").innerHTML+= `<tr class="container-accounts-details">` +
-        `<td class="column1">${transaction.transactionID}</td><td class="column2">${transaction.transactionType}</td>` +
-        `<td class="column3">${transaction.amount}</td><td class="column4">${transaction.transactionDate}</td></tr>`
+        `<td class="column1">${transaction.transactionType}</td><td class="column2">${transaction.amount}</td>` +
+        `<td class="column3">${transaction.transactionDate}</td><td class="column4">`+
+        `<button type="button" id="view-account" onclick="getTransactionInfoAccount(newTransaction , transaction.transactionType)">View</button></td></tr>`
     });
     document.getElementById('account-id').innerHTML = id;
     document.getElementById('account-name').innerHTML = name;
@@ -332,7 +440,8 @@ document.getElementById('submit-account-create').onclick = function() {
         };
         ACCOUNTTABLE.push(newAccount);
         viewTableuser();
-        document.getElementById('modal-account-edit').style.display = 'none';
+        alert('Account Created');
+        document.getElementById('modal-account-create').style.display = 'none';
     }
 }
 
