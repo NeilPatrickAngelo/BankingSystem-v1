@@ -19,16 +19,15 @@
       <h1>Login</h1>
       <form action="#">
         <div class="txt_field">
-          <input id="login-username" type="text" required />
+          <input id="login-username" type="text" maxlength="20" required />
           <span></span>
           <label>Username</label>
         </div>
         <div class="txt_field">
-          <input id="login-password" type="password" required />
+          <input id="login-password" type="password" maxlength="30" required />
           <span></span>
           <label>Password</label>
         </div>
-        <div class="pass">Forgot Password?</div>
 		<button id="submit-login" class="submit_link">Login</button><br/><br/>
         <button id="change-register" class="change_link">Create User</button><br/><br/>
       </form>
@@ -45,11 +44,11 @@
 			<div class="modal-body">
 				<div class="input-box">
 					<span class="details">Enter Account Name:</span>
-					<input id="account-create-name" type="text" required>
+					<input id="account-create-name" type="text" maxlength="20" required>
 				</div>
 				<div class="input-box">
 					<span class="details">Initial Deposit:</span>
-					<input id="account-create-amount" type="text" required>
+					<input id="account-create-amount" type="text" maxlength="10" required>
 				</div>
 			</div>
 			<div class="button">
@@ -74,12 +73,49 @@
 				<input id="account-edit-id" type="text" required>
 				<div class="input-box">
 					<span class="details">Enter Account Name:</span>
-					<input id="account-edit-name" type="text" required>
+					<input id="account-edit-name" type="text" maxlength="30" required>
 				</div>
 			</div>
 			<div class="button">
 				<button id="submit-account-edit" class="submit_link" type="submit">Confirm</button><br/><br/>
 				<button id="cancel-account-edit" class="return_link">Cancel</button><br/><br/>
+			</div>
+			<!--<div class="modal-footer">
+				<h3>Modal Footer</h3>
+			</div>-->
+		</div>
+	</div>
+	
+	<!--account edit page admin-->
+	<div id="modal-account-admin" class="modal">
+		<!-- Modal content -->
+		<div class="modal-content-transactions">
+			<div class="modal-header">
+				<span id="close-account-admin" class="close">&times;</span>
+				<h2>Update Account</h2>
+			</div>
+			<div class="modal-body">
+				<input id="account-edit-id-admin" type="text" style="display: none;">
+				<div class="input-box">
+					<span class="details">First Name:</span>
+					<input id="account-edit-first-name-admin" type="text" maxlength="50" required>
+				</div>
+				<div class="input-box">
+					<span class="details">Last Name:</span>
+					<input id="account-edit-last-name-admin" type="text" maxlength="50" required>
+				</div>
+				<div class="input-box">
+					<span class="details">Email:</span>
+					<input id="account-edit-email-admin" type="text" maxlength="30" required>
+				</div>
+				<div class="input-box">
+					<span class="details" id="account-edit-status-admin">Status: </span>
+				</div>
+			</div>
+			<div class="button">
+				<button id="submit-account-status-admin" class="change_link" type="submit"></button><br/><br/>
+				<button id="submit-account-edit-admin" class="submit_link" type="submit">Update</button><br/><br/>
+				<button id="cancel-account-edit-admin" class="return_link">Cancel</button><br/><br/>
 			</div>
 			<!--<div class="modal-footer">
 				<h3>Modal Footer</h3>
@@ -97,7 +133,7 @@
 				<h2>Account Name: <label id="account-name"></label></h2>
 				<h2>Balance: <label id="balance"></label></h2>
 			</div><br/>
-			<div class="button">
+			<div class="button" style="padding-left: 20%; padding-right: 20%;">
 				<button id="edit-account" class="change_link">Update Account</button><br/>
 			</div>
 			<div class="modal-body">
@@ -109,7 +145,6 @@
 								<th class="column1">Type</th>
 								<th class="column2">Amount</th>
 								<th class="column3">Date</th>
-								<th class="column4">View</th>
 							</tr>
 						</thead>
 						<tbody id="container-transaction-table-tbody">
@@ -120,6 +155,7 @@
 		</div>
 	</div>
 	
+	
 	<!--withdrawal page-->
 	<!-- The Modal -->
 	<div id="modal-withdraw" class="modal">
@@ -127,16 +163,23 @@
 		<div class="modal-content-transactions">
 			<div class="modal-header">
 				<span id="close-withdraw" class="close">&times;</span>
-				<h2>Modal Header</h2>
+				<h2>Withdrawal Page</h2>
 			</div>
 			<div class="modal-body">
 				<div class="input-box">
+					<span class="details" id="withdraw-balance">Available Balance:</span></br>
+					<span class="details">Available Denominations	</span></br>
+					<span class="details" id="withdraw-twentyfive">25 cents:	</span></br>
+					<span class="details" id="withdraw-ten">10 cents:	</span></br>
+					<span class="details" id="withdraw-five">5 cents:	</span></br>
+				</div>
+				<div class="input-box">
 					<span class="details">Enter Withdrawal Amount:	</span>
-					<input id="withdraw-amount" type="text" required>
+					<input id="withdraw-amount" type="text"  maxlength="10" required>
 				</div>
 				<div class="input-box">
 					<span class="details">Select Account:	</span>
-					<select id="withdraw-account" >
+					<select id="withdraw-account" onchange="withdrawdenom('withdraw-five', 'withdraw-ten', 'withdraw-twentyfive', this)">
 					</select>
 				</div>
 			</div>
@@ -157,12 +200,12 @@
 		<div class="modal-content-transactions">
 			<div class="modal-header">
 				<span id="close-deposit" class="close">&times;</span>
-				<h2>Modal Header</h2>
+				<h2>Deposit Page</h2>
 			</div>
 			<div class="modal-body">
 				<div class="input-box">
 					<span class="details">Enter Deposit Amount:	</span>
-					<input id="deposit-amount" type="text" required>
+					<input id="deposit-amount" type="text" maxlength="10" required>
 				</div>
 				<div class="input-box">
 					<span class="details">Select Account:	</span>
@@ -187,7 +230,7 @@
 		<div class="modal-content-transactions">
 			<div class="modal-header">
 				<span id="close-transfer" class="close">&times;</span>
-				<h2>Modal Header</h2>
+				<h2>Transfer Page</h2>
 			</div>
 			<div class="modal-body">
 				<div class="input-box">
@@ -202,7 +245,7 @@
 				</div>
 				<div class="input-box">
 					<span class="details">Enter Transfer Amount:	</span>
-					<input id="transfer-amount" type="text" required>
+					<input id="transfer-amount" type="text" maxlength="10" required>
 				</div>
 			</div>
 			<div class="button">
@@ -255,14 +298,14 @@
 		</div>
 	</div>
 
-	<!--home page-->
-    <div id="transaction-area" class="transaction-area-style">
+	<!--home page user-->
+    <div id="transaction-area" class="transaction-area-style" style="display: block;">
 		<input id="user-id" style="display: none;" value="user1">
-		<label id="user-greetings" style="padding-right: 65%;">Hello, FullName 
-		</label>
+		<label id="user-greetings" class="user_greetings">
 			<button id="profile-update" class="profile_link">Update Profile</button>
 			<button id="log-out" class="log_out_link">Log Out</button>
-		<div class="content">
+		</label></br>
+		<div id="view-user-buttons" class="content">
 		<form action="#">
 			<div>
 			</br>
@@ -374,8 +417,169 @@
 			</table>
         </div>
     </div>
+
+	<!--home page admin-->
+    <div id="transaction-area-admin" class="transaction-area-style" style="display: none;">
+		<input id="admin-id" style="display: none;">
+		<label id="admin-greetings" class="user_greetings">
+			<button id="profile-update-admin" class="profile_link">Update Profile</button>
+			<button id="log-out-admin" class="log_out_link">Log Out</button>
+		</label></br>
+		<div id="view-administrator-buttons" class="content">
+		<form action="#">
+			<div>
+			</br>
+				<div class="input-box">
+				  <button id="add-user" class="change_link">Create User</button>
+				</div>
+			  </div>
+			<div class="user-details">
+			</div>
+		</form>
+        </div>
+        <div class="container-accounts-style">
+			<table id="container-accounts-table" class="container-accounts-table-style">
+				<thead class="container-accounts-thead-style">
+					<tr class="container-accounts-heading-style">
+						<th class="column1" style="display: none;">USER ID</th>
+						<th class="column2">FULL NAME</th>
+						<th class="column3">USER NAME</th>
+						<th class="column4">STATUS</th>
+						<th class="column5">VIEW</th>
+					</tr>
+				</thead>
+				<tbody id="container-accounts-table-tbody">
+					<tr class="container-accounts-details">
+						<td class="column1" style="display: block;">
+							<div class="input-box">
+								<span class="details" id="admin-id1" style="display: none;"></span>
+							</div>
+						</td>
+						<td class="column2">
+							<div class="input-box">
+								<span class="details" id="admin-name1"></span>
+							</div>
+						</td>
+						<td class="column3">
+							<div class="input-box">
+								<span class="details" id="admin-username1"></span>
+							</div>
+						</td>
+						<td class="column4">
+							<div class="input-box">
+								<span class="details" id="admin-status1"></span>
+							</div>
+						</td>
+						<td class="column5">
+							<button type="button" id="admin-view1">View</button>
+						</td>
+					</tr>
+					<tr class="container-accounts-details">
+						<td class="column1" style="display: block;">
+							<div class="input-box">
+								<span class="details" id="admin-id2" style="display: none;"></span>
+							</div>
+						</td>
+						<td class="column2">
+							<div class="input-box">
+								<span class="details" id="admin-name2"></span>
+							</div>
+						</td>
+						<td class="column3">
+							<div class="input-box">
+								<span class="details" id="admin-username2"></span>
+							</div>
+						</td>
+						<td class="column4">
+							<div class="input-box">
+								<span class="details" id="admin-status2"></span>
+							</div>
+						</td>
+						<td class="column5">
+							<button type="button" id="admin-view2">View</button>
+						</td>
+					</tr>
+					<tr class="container-accounts-details">
+						<td class="column1" style="display: block;">
+							<div class="input-box">
+								<span class="details" id="admin-id3" style="display: none;"></span>
+							</div>
+						</td>
+						<td class="column2">
+							<div class="input-box">
+								<span class="details" id="admin-name3"></span>
+							</div>
+						</td>
+						<td class="column3">
+							<div class="input-box">
+								<span class="details" id="admin-username3"></span>
+							</div>
+						</td>
+						<td class="column4">
+							<div class="input-box">
+								<span class="details" id="admin-status3"></span>
+							</div>
+						</td>
+						<td class="column5">
+							<button type="button" id="admin-view3">View</button>
+						</td>
+					</tr>
+					<tr class="container-accounts-details">
+						<td class="column1" style="display: block;">
+							<div class="input-box">
+								<span class="details" id="admin-id4" style="display: none;"></span>
+							</div>
+						</td>
+						<td class="column2">
+							<div class="input-box">
+								<span class="details" id="admin-name4"></span>
+							</div>
+						</td>
+						<td class="column3">
+							<div class="input-box">
+								<span class="details" id="admin-username4"></span>
+							</div>
+						</td>
+						<td class="column4">
+							<div class="input-box">
+								<span class="details" id="admin-status4"></span>
+							</div>
+						</td>
+						<td class="column5">
+							<button type="button" id="admin-view4">View</button>
+						</td>
+					</tr>
+					<tr class="container-accounts-details">
+						<td class="column1" style="display: block;">
+							<div class="input-box">
+								<span class="details" id="admin-id5" style="display: none;"></span>
+							</div>
+						</td>
+						<td class="column2">
+							<div class="input-box">
+								<span class="details" id="admin-name5"></span>
+							</div>
+						</td>
+						<td class="column3">
+							<div class="input-box">
+								<span class="details" id="admin-username5"></span>
+							</div>
+						</td>
+						<td class="column4">
+							<div class="input-box">
+								<span class="details" id="admin-status5"></span>
+							</div>
+						</td>
+						<td class="column5">
+							<button type="button" id="admin-view5">View</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+        </div>
+    </div>
 	
-	<!--registration page-->
+	<!--registration page user-->
 	<div id="registration-area" class="registration-area-style">
 		<div class="title">REGISTRATION</div>
 		<div class="content">
@@ -383,32 +587,71 @@
 			<div class="user-details">
 			  <div class="input-box">
 				<span class="details">First Name</span>
-				<input id="first-name" type="text" required>
+				<input id="first-name" type="text" maxlength="50" required>
 			  </div>
 			  <div class="input-box">
 				<span class="details">Last Name</span>
-				<input id="last-name" type="text" required>
+				<input id="last-name" type="text" maxlength="30" required>
 			  </div>
 			  <div class="input-box">
 				<span class="details">Email Address</span>
-				<input id="email-address" type="text" required>
+				<input id="email-address" type="text" maxlength="30" required>
 			  </div>
 			  <div class="input-box">
 				<span class="details">Username</span>
-				<input id="user-name" type="text" required>
+				<input id="user-name" type="text" maxlength="20" required>
 			  </div>
 			  <div class="input-box">
 				<span class="details">Password</span>
-				<input id="password" type="text" required>
+				<input id="password" type="text" maxlength="30" required>
 			  </div>
 			  <div class="input-box">
 				<span class="details">Confirm Password</span>
-				<input id="confirm-password" type="text" required>
+				<input id="confirm-password" type="text" maxlength="30" required>
 			  </div>
 			</div>
 			<div class="button">
-				<button id="submit-register" class="submit_link" type="submit">Login</button><br/><br/>
+				<button id="submit-register" class="submit_link" type="submit">Register</button><br/><br/>
 				<button id="return-register" class="return_link">Return</button><br/><br/>
+			</div>
+		  </form>
+		</div>
+	</div>
+	
+	<!--registration page admin-->
+	<div id="registration-area-admin" class="registration-area-style">
+		<div class="title">REGISTRATION</div>
+		<div class="content">
+		  <form action="#">
+			<div class="user-details">
+			  <div class="input-box">
+				<span class="details">First Name</span>
+				<input id="first-name-admin" type="text" maxlength="50" required>
+			  </div>
+			  <div class="input-box">
+				<span class="details">Last Name</span>
+				<input id="last-name-admin" type="text" maxlength="50" required>
+			  </div>
+			  <div class="input-box">
+				<span class="details">Email Address</span>
+				<input id="email-address-admin" type="text" maxlength="30" required>
+			  </div>
+			  <div class="input-box">
+				<span class="details">Username</span>
+				<input id="user-name-admin" type="text" maxlength="20" required>
+			  </div>
+			  <div class="input-box">
+				<span class="details">Password</span>
+				<input id="password-admin" type="password" maxlength="30" required>
+			  </div>
+			  <div class="input-box">
+				<span class="details">Confirm Password</span>
+				<input id="confirm-password-admin" type="password" maxlength="30" required>
+			  </div>
+			</div>
+			<div class="button">
+				<button id="submit-register-admin" class="submit_link" type="submit">Login</button><br/><br/>
+				<button id="return-register-admin" class="return_link">Return</button><br/><br/>
 			</div>
 		  </form>
 		</div>
@@ -422,16 +665,16 @@
 			<div class="user-details">
 			  <div class="input-box">
 				<span class="details">First Name</span>
-				<input id="user-id-edit" type="text" >
-				<input id="first-name-edit" type="text" required>
+				<input id="user-id-edit" style="display: none;" type="text" >
+				<input id="first-name-edit" type="text" maxlength="50" required>
 			  </div>
 			  <div class="input-box">
 				<span class="details">Last Name</span>
-				<input id="last-name-edit" type="text" required>
+				<input id="last-name-edit" type="text" maxlength="50" required>
 			  </div>
 			  <div class="input-box">
 				<span class="details">Email</span>
-				<input id="email-address-edit" type="text" required>
+				<input id="email-address-edit" type="text" maxlength="30" required>
 			  </div>
 			  <!--<div class="input-box">
 				<span class="details">Password</span>
@@ -443,9 +686,47 @@
 			  </div>-->
 			</div>
 			<div class="button">
-				<button id="password-user-edit" class="change_link" type="submit">Change Password</button><br/><br/>
+				<!--<button id="password-user-edit" class="change_link" type="submit">Change Password</button><br/><br/>-->
 				<button id="submit-user-edit" class="submit_link" type="submit">Update</button><br/><br/>
 				<button id="return-user-edit" class="return_link">Return</button>
+			</div>
+		  </form>
+		</div>
+	</div>
+	
+	<!--profile edit page admin-->
+	<div id="profile-area-admin" class="profile-area-style">
+		<div class="title">USER PROFILE</div>
+		<div class="content">
+		  <form action="#">
+			<div class="user-details">
+			  <div class="input-box">
+				<span class="details">First Name</span>
+				<input id="user-id-edit-admin" style="display: none;" type="text" >
+				<input id="first-name-edit-admin" type="text" maxlength="50" required>
+			  </div>
+			  <div class="input-box">
+				<span class="details">Last Name</span>
+				<input id="last-name-edit-admin" type="text" maxlength="50" required>
+			  </div>
+			  <div class="input-box">
+				<span class="details">Email</span>
+				<input id="email-address-edit-admin" type="text" maxlength="30" required>
+			  </div>
+			  <!--<div class="input-box">
+				<span class="details">Password</span>
+				<input id="first-name-edit" type="text" placeholder="Enter your password" required>
+			  </div>
+			  <div class="input-box">
+				<span class="details">Confirm Password</span>
+				<input type="text" placeholder="Confirm your password" required>
+			  </div>-->
+			</div>
+			<div class="button">
+				<!--<button id="password-user-edit" class="change_link" type="submit">Change Password</button><br/><br/>-->
+				<button id="submit-user-freeze-admin" class="submit_link" type="submit" style="display: none;"></button><br/><br/>
+				<button id="submit-user-edit-admin" class="submit_link" type="submit">Update</button><br/><br/>
+				<button id="return-user-edit-admin" class="return_link">Return</button>
 			</div>
 		  </form>
 		</div>
