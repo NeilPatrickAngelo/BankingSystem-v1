@@ -105,10 +105,11 @@
 					<table id="container-transaction-table" class="container-transaction-table-style">
 						<thead class="container-transaction-thead-style">
 							<tr class="container-transaction-heading-style">
-								<th class="column1">Transaction Number</th>
-								<th class="column2">Type</th>
-								<th class="column3">Amount</th>
-								<th class="column4">Date</th>
+								<!--<th class="column1">#</th>-->
+								<th class="column1">Type</th>
+								<th class="column2">Amount</th>
+								<th class="column3">Date</th>
+								<th class="column4">View</th>
 							</tr>
 						</thead>
 						<tbody id="container-transaction-table-tbody">
@@ -214,6 +215,46 @@
 		</div>
 	</div>
 	
+	<!--receipt page-->
+	<!-- The Modal -->
+	<div id="modal-receipt" class="modal">
+		<!-- Modal content -->
+		<div class="modal-content-transactions">
+			<div class="modal-header">
+				<span id="receipt-close-x" class="close">&times;</span>
+				<h2 id="receipt-title"></h2>
+			</div>
+			<div class="modal-body">
+				<div class="input-box">
+					<span class="details">Account Name: </span>
+					<span class="details" id="receipt-account">
+				</div>
+				<div class="input-box">
+					<span class="details">Name: </span>
+					<span class="details" id="receipt-name">
+				</div>
+				<div class="input-box">
+					<span class="details">Transaction Date: </span>
+					<span class="details" id="receipt-date">
+				</div>
+				<div class="input-box">
+					<span class="details">Amount: </span>
+					<span class="details" id="receipt-amount">
+				</div>
+				<div class="input-box">
+					<span class="details">Balance: </span>
+					<span class="details" id="receipt-balance">
+				</div>
+			</div>
+			<!--<div class="button">
+				<button id="receipt-close" class="return_link">Cancel</button><br/><br/>
+			</div>
+			<div class="modal-footer">
+				<h3>Modal Footer</h3>
+			</div>-->
+		</div>
+	</div>
+
 	<!--home page-->
     <div id="transaction-area" class="transaction-area-style">
 		<input id="user-id" style="display: none;" value="user1">
