@@ -93,6 +93,38 @@ form .txt_field {
 .submit_link {
   border-color: #12b564;
 }
+.profile_link{
+  width: 110px;
+  height: 30px;
+  background: #12b564;
+  border-radius: 25px;
+  font-size: 14px;
+  color: #420cd6;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  transition: 0.5s;
+  border: none;
+}
+.profile_link {
+  background-color: transparent;
+}
+.log_out_link{
+  width: 60px;
+  height: 30px;
+  background: #ab2905;
+  border-radius: 25px;
+  font-size: 14px;
+  color: #e9f4fb;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  transition: 0.5s;
+  border: none;
+}
+.log_out_link {
+  border-color: #12b564;
+}
 .change_link{
   width: 100%;
   height: 50px;
@@ -149,7 +181,7 @@ input[type="submit"]:hover {
     box-shadow: 5px 5px 10px gray;
     border-radius: 10px;
 }
-#transaction-area-style{
+.transaction-area-style{
     display: block;
 }
 .deposit{
@@ -327,6 +359,87 @@ body{
   position: relative;
 }
 .registration-area-style .title::before{
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 30px;
+  border-radius: 5px;
+  background: linear-gradient(135deg, #71b7e6, #9b59b6);
+}
+
+/*profile modal*/
+.profile-area-style{
+  display: none;
+  max-width: 800px;
+  width: 100%;
+  height: 550px;
+  background-color: #fff;
+  padding: 25px 25px;
+  border-radius: 5px;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+}
+.profile-area-style .title{
+  font-size: 25px;
+  font-weight: 500;
+  position: relative;
+}
+.profile-area-style .title::before{
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 30px;
+  border-radius: 5px;
+  background: linear-gradient(135deg, #71b7e6, #9b59b6);
+}
+
+/*account create modal*/
+.account-create-area-style{
+  display: none;
+  max-width: 800px;
+  width: 100%;
+  height: 550px;
+  background-color: #fff;
+  padding: 25px 25px;
+  border-radius: 5px;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+}
+.account-create-area-style .title{
+  font-size: 25px;
+  font-weight: 500;
+  position: relative;
+}
+.account-create-area-style .title::before{
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 30px;
+  border-radius: 5px;
+  background: linear-gradient(135deg, #71b7e6, #9b59b6);
+}
+
+/*transfer modal*/
+.account-edit-area-style{
+  display: none;
+  max-width: 800px;
+  width: 100%;
+  height: 550px;
+  background-color: #fff;
+  padding: 25px 25px;
+  border-radius: 5px;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+}
+.account-edit-area-style .title{
+  font-size: 25px;
+  font-weight: 500;
+  position: relative;
+}
+.account-edit-area-style .title::before{
   content: "";
   position: absolute;
   left: 0;
