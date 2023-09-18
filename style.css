@@ -22,11 +22,11 @@
   padding: 20px 0;
   border-bottom: 1px solid silver;
 }
-.login-area-style form {
+.login-area-style .login {
   padding: 0 40px;
   box-sizing: border-box;
 }
-form .txt_field {
+.login .txt_field {
   position: relative;
   border-bottom: 2px solid #adadad;
   margin: 30px 0;
@@ -363,7 +363,7 @@ body{
   display: none;
   max-width: 800px;
   width: 100%;
-  height: 550px;
+  height: 580px;
   background-color: #fff;
   padding: 25px 25px;
   border-radius: 5px;
@@ -465,17 +465,17 @@ body{
   border-radius: 5px;
   background: linear-gradient(135deg, #71b7e6, #9b59b6);
 }
-.content form .user-details{
+.content .content-form .user-details{
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   margin: 15px 0 10px 0;
 }
-form .user-details .input-box{
+.content-form .user-details .input-box{
   margin-bottom: 10px;
   width: calc(100% / 3 - 20px);
 }
-form .input-box span.details{
+.content-form .input-box span.details{
   display: block;
   font-weight: 500;
   margin-bottom: 5px;
@@ -525,14 +525,14 @@ form .input-box span.details{
    background: #9b59b6;
    border-color: #d9d9d9;
  }
- form input[type="radio"]{
+ .content-form input[type="radio"]{
    display: none;
  }
- form .button{
+ .content-form .button{
    height: 45px;
    margin: 35px 0
  }
- form .button input{
+ .content-form .button input{
    height: 100%;
    width: 100%;
    border-radius: 5px;
@@ -545,7 +545,7 @@ form .input-box span.details{
    transition: all 0.3s ease;
    background: linear-gradient(135deg, #71b7e6, #9b59b6);
  }
- form .button input:hover{
+ .content-form .button input:hover{
   /* transform: scale(0.99); */
   background: linear-gradient(-135deg, #71b7e6, #9b59b6);
   }
@@ -553,14 +553,14 @@ form .input-box span.details{
  .container{
   max-width: 100%;
 }
-form .user-details .input-box{
+.content-form .user-details .input-box{
     margin-bottom: 15px;
     width: 100%;
   }
-  form .category{
+  .content-form .category{
     width: 100%;
   }
-  .content form .user-details{
+  .content .content-form .user-details{
     max-height: 300px;
     overflow-y: scroll;
   }
