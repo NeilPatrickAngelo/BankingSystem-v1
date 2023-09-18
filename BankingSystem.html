@@ -19,12 +19,12 @@
       <h1>Login</h1>
       <form action="#">
         <div class="txt_field">
-          <input id="login-username" type="text" maxlength="20" required />
+          <input id="login-username" type="text" maxlength="20"/>
           <span></span>
           <label>Username</label>
         </div>
         <div class="txt_field">
-          <input id="login-password" type="password" maxlength="30" required />
+          <input id="login-password" type="password" maxlength="30"/>
           <span></span>
           <label>Password</label>
         </div>
@@ -204,8 +204,14 @@
 			</div>
 			<div class="modal-body">
 				<div class="input-box">
+					<span class="details">Available Denominations	</span></br>
+					<span class="details" id="deposit-twentyfive">25 cents:	</span></br>
+					<span class="details" id="deposit-ten">10 cents:	</span></br>
+					<span class="details" id="deposit-five">5 cents:	</span></br>
+				</div>
+				<div class="input-box">
 					<span class="details">Enter Deposit Amount:	</span>
-					<input id="deposit-amount" type="text" maxlength="10" required>
+					<input id="deposit-amount" type="text" maxlength="10" onchange="depositdenom(this)" required>
 				</div>
 				<div class="input-box">
 					<span class="details">Select Account:	</span>
@@ -240,8 +246,6 @@
 					<span class="details" id="transfer-ten">10 cents:	</span></br>
 					<span class="details" id="transfer-five">5 cents:	</span></br>
 				</div>
-			</div>
-			<div class="modal-body">
 				<div class="input-box">
 					<span class="details">Select Account to transfer from:	</span>
 					<select id="transfer-account-from" onchange="transferdenom(this)">
@@ -309,7 +313,7 @@
 
 	<!--home page user-->
     <div id="transaction-area" class="transaction-area-style" style="display: none;">
-		<input id="user-id" style="display: none;" value="user1">
+		<input id="user-id" style="display: none;" value="none">
 		<label id="user-greetings" class="user_greetings">
 			<button id="profile-update" class="profile_link">Update Profile</button>
 			<button id="log-out" class="log_out_link">Log Out</button>
@@ -429,7 +433,7 @@
 
 	<!--home page admin-->
     <div id="transaction-area-admin" class="transaction-area-style" style="display: none;">
-		<input id="admin-id" style="display: none;">
+		<input id="admin-id" style="display: none;" value="none">
 		<label id="admin-greetings" class="user_greetings">
 			<button id="profile-update-admin" class="profile_link">Update Profile</button>
 			<button id="log-out-admin" class="log_out_link">Log Out</button>
@@ -447,7 +451,7 @@
 		</form>
         </div>
         <div class="container-accounts-style">
-			<table id="container-accounts-table" class="container-accounts-table-style">
+			<table id="container-accounts-table-admin" class="container-accounts-table-style">
 				<thead class="container-accounts-thead-style">
 					<tr class="container-accounts-heading-style">
 						<th class="column1" style="display: none;">USER ID</th>
@@ -583,6 +587,31 @@
 							<button type="button" id="admin-view5">View</button>
 						</td>
 					</tr>
+					<tr class="container-accounts-details">
+						<td class="column1" style="display: none;">
+							<div class="input-box">
+								<span class="details" id="admin-id6" style="display: none;"></span>
+							</div>
+						</td>
+						<td class="column2">
+							<div class="input-box">
+								<span class="details" id="admin-name6"></span>
+							</div>
+						</td>
+						<td class="column3">
+							<div class="input-box">
+								<span class="details" id="admin-username6"></span>
+							</div>
+						</td>
+						<td class="column4">
+							<div class="input-box">
+								<span class="details" id="admin-status6"></span>
+							</div>
+						</td>
+						<td class="column5">
+							<button type="button" id="admin-view6">View</button>
+						</td>
+					</tr>
 				</tbody>
 			</table>
         </div>
@@ -659,7 +688,7 @@
 			  </div>
 			</div>
 			<div class="button">
-				<button id="submit-register-admin" class="submit_link" type="submit">Login</button><br/><br/>
+				<button id="submit-register-admin" class="submit_link" type="submit">Register</button><br/><br/>
 				<button id="return-register-admin" class="return_link">Return</button><br/><br/>
 			</div>
 		  </form>
