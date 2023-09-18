@@ -76,7 +76,7 @@ function updateAccountTransact(amount, accountId){
     //console.log('newBal: ' + newBalance);
     filteredAccount.forEach(function (accounts) {
         //newAmount = accounts.balance + newAmount;
-        accounts.balance = newBalance;
+        accounts.balance = parseFloat(newBalance).toFixed(2);
     });
     viewTableUser();
 }
@@ -234,6 +234,7 @@ window.onclick = function(event) {
 
 //add transaction
 function addTransaction(amount, transactType, accountId){
+    let admountValue = parseFloat(amount).toFixed(2);
     let filteredTransactionsUser = TRANSACTION.filter(function (users){
         return users.userID == document.getElementById("user-id").value;;
     });
@@ -244,9 +245,10 @@ function addTransaction(amount, transactType, accountId){
     let datetoday = new Date().toLocaleString();
     let newTransaction = {
         transactionID: 'transaction'+countTransaction,
+        userID: document.getElementById("user-id").value,
         account: accountId,
+        amount: admountValue,
         transactionType: transactType,
-        amount: amount,
         transactionDate: datetoday,
     };
     TRANSACTION.push(newTransaction);
@@ -362,8 +364,11 @@ document.getElementById("submit-withdraw").onclick = function() {
     filteredAccount.forEach(function (accounts) {
         newBal = accounts.balance;
     });
-    newBalance = parseFloat(newBal);
+    newBalance = parseFloat(newBal).toFixed(2);
     newBalance -= amount;
+    console.log(amount);
+    console.log(newBal);
+    console.log(newBalance);
     if(account == 'none'){
         alert('Please Select an Account.');
     }
@@ -374,7 +379,7 @@ document.getElementById("submit-withdraw").onclick = function() {
         else if(amount<0){
             alert('Amount sholud not be less than 0.');
         }
-        else if(newBalance < .05){
+        else if(newBalance < 0.05){
             alert('Cannot withdraw from account. Maintaining balance of 5 centavos is required.');
         }
         else{
@@ -384,7 +389,7 @@ document.getElementById("submit-withdraw").onclick = function() {
             else{
                 let amountValue = parseFloat(amount).toFixed(2);
                 let withdrawAmount = amountValue * -1;
-                addTransaction(withdrawAmount, transactType, account);
+                addTransaction(parseFloat(withdrawAmount).toFixed(2), transactType, account);
                 updateAccountTransact(withdrawAmount, account);
                 let transactInfo = getTransactionInfo(account, amountValue);
                 //console.log(transactInfo);
@@ -455,8 +460,11 @@ document.getElementById("submit-transfer").onclick = function() {
     filteredAccount.forEach(function (accounts) {
         newBal = accounts.balance;
     });
-    newBalance = parseFloat(newBal);
+    newBalance = parseFloat(newBal).toFixed(2);
     newBalance -= amount;
+    console.log(amount);
+    console.log(newBal);
+    console.log(newBalance);
     if(accountfrom == 'none' || accountto == 'none'){
         alert('Please Select an Account.');
     }
@@ -470,7 +478,7 @@ document.getElementById("submit-transfer").onclick = function() {
         else if(amount<0){
             alert('Amount sholud not be less than 0.');
         }
-        else if(newBalance < .05){
+        else if(newBalance < 0.05){
             alert('Cannot withdraw from account. Maintaining balance of 5 centavos is required.');
         }
         else{
@@ -533,10 +541,14 @@ function viewAccount(id, name, balance, status){
     document.getElementById("modal-account").style.display = "block";
     //console.log('Id and Name: '+id, name);
     document.getElementById("container-transaction-table-tbody").innerHTML = "";
-    let filteredTransactions = TRANSACTION.filter(function (transact){
+    let filteredAccount = TRANSACTION.filter(function (transact){
+        return transact.userID == document.getElementById("user-id").value;
+    });
+    console.log(filteredAccount);
+    let filteredTransactions = filteredAccount.filter(function (transact){
         return transact.account == id;
     });
-    let filteredTransactionsSlice = filteredTransactions.slice(0,2);
+    let filteredTransactionsSlice = filteredTransactions.slice(0,10);
     filteredTransactionsSlice.forEach(function (transaction) {
         /*console.log(`No. ${index + 1}:`);
         console.log(`Id: ${transaction.transactionID}`);
@@ -1065,7 +1077,7 @@ document.getElementById("log-out-admin").addEventListener('click', function(){
 
 //user table
 function viewTableUser(){
-    console.log('userId:::::'+document.getElementById("user-id").value);
+    //console.log('userId:::::'+document.getElementById("user-id").value);
     let filteredAccount = ACCOUNTTABLE.filter(function (accounts){
         return accounts.userID == document.getElementById("user-id").value;
     });
@@ -1123,7 +1135,7 @@ function viewTableUser(){
 //viewTableAdmin();
 
 function viewTableAdmin(){
-    console.log('userId:::::'+document.getElementById("admin-id").value);
+    //console.log('userId:::::'+document.getElementById("admin-id").value);
     let i = 0, count = 1, countUser = 0;
     document.getElementById("admin-view1").style.display = 'none';
     document.getElementById("admin-view2").style.display = 'none';
