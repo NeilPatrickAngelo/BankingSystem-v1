@@ -15,7 +15,7 @@
   background: white;
   border-radius: 10px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
-  display: none;
+  display: block;
 }
 .login-area-style h1 {
   text-align: center;
@@ -182,7 +182,7 @@ input[type="submit"]:hover {
     border-radius: 10px;
 }
 .transaction-area-style{
-    display: block;
+    display: none;
 }
 .deposit{
     background-color: #5d4ec6;
