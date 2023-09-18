@@ -179,7 +179,7 @@
 				</div>
 				<div class="input-box">
 					<span class="details">Select Account:	</span>
-					<select id="withdraw-account" onchange="withdrawdenom('withdraw-five', 'withdraw-ten', 'withdraw-twentyfive', this)">
+					<select id="withdraw-account" onchange="withdrawdenom(this)">
 					</select>
 				</div>
 			</div>
@@ -234,8 +234,17 @@
 			</div>
 			<div class="modal-body">
 				<div class="input-box">
+					<span class="details" id="transfer-balance">Available Balance:</span></br>
+					<span class="details">Available Denominations	</span></br>
+					<span class="details" id="transfer-twentyfive">25 cents:	</span></br>
+					<span class="details" id="transfer-ten">10 cents:	</span></br>
+					<span class="details" id="transfer-five">5 cents:	</span></br>
+				</div>
+			</div>
+			<div class="modal-body">
+				<div class="input-box">
 					<span class="details">Select Account to transfer from:	</span>
-					<select id="transfer-account-from" >
+					<select id="transfer-account-from" onchange="transferdenom(this)">
 					</select>
 				</div>
 				<div class="input-box">
@@ -299,7 +308,7 @@
 	</div>
 
 	<!--home page user-->
-    <div id="transaction-area" class="transaction-area-style" style="display: block;">
+    <div id="transaction-area" class="transaction-area-style" style="display: none;">
 		<input id="user-id" style="display: none;" value="user1">
 		<label id="user-greetings" class="user_greetings">
 			<button id="profile-update" class="profile_link">Update Profile</button>
@@ -450,7 +459,7 @@
 				</thead>
 				<tbody id="container-accounts-table-tbody">
 					<tr class="container-accounts-details">
-						<td class="column1" style="display: block;">
+						<td class="column1" style="display: none;">
 							<div class="input-box">
 								<span class="details" id="admin-id1" style="display: none;"></span>
 							</div>
@@ -475,7 +484,7 @@
 						</td>
 					</tr>
 					<tr class="container-accounts-details">
-						<td class="column1" style="display: block;">
+						<td class="column1" style="display: none;">
 							<div class="input-box">
 								<span class="details" id="admin-id2" style="display: none;"></span>
 							</div>
@@ -500,7 +509,7 @@
 						</td>
 					</tr>
 					<tr class="container-accounts-details">
-						<td class="column1" style="display: block;">
+						<td class="column1" style="display: none;">
 							<div class="input-box">
 								<span class="details" id="admin-id3" style="display: none;"></span>
 							</div>
@@ -525,7 +534,7 @@
 						</td>
 					</tr>
 					<tr class="container-accounts-details">
-						<td class="column1" style="display: block;">
+						<td class="column1" style="display: none;">
 							<div class="input-box">
 								<span class="details" id="admin-id4" style="display: none;"></span>
 							</div>
@@ -550,7 +559,7 @@
 						</td>
 					</tr>
 					<tr class="container-accounts-details">
-						<td class="column1" style="display: block;">
+						<td class="column1" style="display: none;">
 							<div class="input-box">
 								<span class="details" id="admin-id5" style="display: none;"></span>
 							</div>
