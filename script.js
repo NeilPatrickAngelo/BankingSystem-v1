@@ -1,17 +1,17 @@
 let USERTABLE = [];
 USERTABLE = [
-	{userID: "admin", firstName: "Neil", lastName: "Administrator", email: "admin@gmail.com", userName: "admin", password: "admin", userType: 0, status: "Unfreeze", attemptLogin: 0},
+	{userID: "admin", firstName: "Neil", lastName: "Administrator", email: "admin@gmail.com", userName: "admin", password: "admin", userType: 0, status: "Unfreeze", attemptLogin: 100},
 	{userID: "user1", firstName: "Neil1", lastName: "Falceso1", email: "admin@gmail.com", userName: "user1", password: "user1", userType: 1, status: "Unfreeze", attemptLogin: 0},
-	{userID: "user2", firstName: "Neil2", lastName: "Falceso2", email: "admin@gmail.com", userName: "user2", password: "user2", userType: 1, status: "Freeze", attemptLogin: 0},
+	{userID: "user2", firstName: "Neil2", lastName: "Falceso2", email: "admin@gmail.com", userName: "user2", password: "user2", userType: 1, status: "Unfreeze", attemptLogin: 0},
 	];
 
 let ACCOUNTTABLE = [];
-/*ACCOUNTTABLE = [
-	{accountID: "account1", accountName: "My Savings1", userID: "user1", balance: 10.00, status: "Active"},
-    {accountID: "account2", accountName: "My Savings2", userID: "user1", balance: 20.00, status: "Active"},
-	{accountID: "account1", accountName: "My Savings3", userID: "user2", balance: 10.00, status: "Active"},
-    {accountID: "account2", accountName: "My Savings4", userID: "user2", balance: 20.00, status: "Active"},
-	];*/
+ACCOUNTTABLE = [
+	{accountID: "account1", accountName: "My Savings1", userID: "user1", balance: '10.00', status: "Active"},
+    {accountID: "account2", accountName: "My Savings2", userID: "user1", balance: '20.00', status: "Active"},
+//	{accountID: "account1", accountName: "My Savings3", userID: "user2", balance: 10.00, status: "Active"},
+//    {accountID: "account2", accountName: "My Savings4", userID: "user2", balance: 20.00, status: "Active"},
+	];
 
 let TRANSACTION = [];
 /*TRANSACTION = [
@@ -60,7 +60,7 @@ function dropDownAccounts(type){
 
 //update account
 function updateAccountTransact(amount, accountId){
-    let newBal = 0, newBalance = 0.00;
+    let newBal = 0, newBalance = 0, amountValue = 0;
     let filteredAccountUser = ACCOUNTTABLE.filter(function (users){
         return users.userID == document.getElementById("user-id").value;
     });
@@ -71,8 +71,10 @@ function updateAccountTransact(amount, accountId){
         //newAmount = accounts.balance + newAmount;
         newBal = accounts.balance;
     });
+    amountValue = parseFloat(amount);
     newBalance = parseFloat(newBal);
-    newBalance += amount;
+    newBalance += amountValue;
+    console.log(newBalance);
     //console.log('newBal: ' + newBalance);
     filteredAccount.forEach(function (accounts) {
         //newAmount = accounts.balance + newAmount;
@@ -182,7 +184,7 @@ document.getElementById("add-withdraw").addEventListener('click', function(){
     document.getElementById("withdraw-twentyfive").innerHTML = "25 cents: ";
     document.getElementById("withdraw-ten").innerHTML = "10 cents: ";
     document.getElementById("withdraw-five").innerHTML = "5 cents: ";
-
+    document.getElementById("withdraw-amount").innerHTML = " ";
     dropDownAccounts("withdraw-account");
     document.getElementById("modal-withdraw").style.display = "block";
 });
@@ -193,6 +195,7 @@ document.getElementById("close-withdraw").onclick = function() {
 
 document.getElementById("add-deposit").addEventListener('click', function(){
     dropDownAccounts("deposit-account");
+    document.getElementById("deposit-amount").innerHTML = " ";
     document.getElementById("modal-deposit").style.display = "block";
 });
 
@@ -205,6 +208,7 @@ document.getElementById("add-transfer").addEventListener('click', function(){
     document.getElementById("transfer-twentyfive").innerHTML = "25 cents: ";
     document.getElementById("transfer-ten").innerHTML = "10 cents: ";
     document.getElementById("transfer-five").innerHTML = "5 cents: ";
+    document.getElementById("transfer-amount").innerHTML = " ";
     dropDownAccounts("transfer-account-from");
     dropDownAccounts("transfer-account-to");
     document.getElementById("modal-transfer").style.display = "block";
@@ -348,6 +352,44 @@ function getTransactionInfo(accountId, amount){
     return newTransactionInfo;
 }
 
+function getTransactionTransferInfo(accountFrom, accountTo, amount){
+    let datetoday = new Date().toLocaleString();
+    let fullName = "", accountID = "", accountNameFrom = "", accountNameTo = "", remBalance = "";
+    let filteredUser = USERTABLE.filter(function (users){
+        return users.userID == document.getElementById("user-id").value;
+    });
+    filteredUser.forEach(function (users) {
+        fullName = users.firstName + " " + users.lastName;
+    });
+    let filteredAccount = ACCOUNTTABLE.filter(function (accounts){
+        return accounts.userID == document.getElementById("user-id").value;
+    });
+    filteredAccount.forEach(function (accounts) {
+        accountID = accounts.accountID;
+    });
+    let filteredAccountNameFrom = filteredAccount.filter(function (accounts){
+        return accounts.accountID == accountFrom;
+    });
+    let filteredAccountNameTo = filteredAccount.filter(function (accounts){
+        return accounts.accountID == accountTo;
+    });
+    filteredAccountNameFrom.forEach(function (accounts) {
+        accountNameFrom = accounts.accountName;
+        remBalance = accounts.balance;
+    });
+    filteredAccountNameTo.forEach(function (accounts) {
+        accountNameTo = accounts.accountName;
+    });
+    //console.log('accountName'+accountName+' fullName'+fullName+' datetoday'+datetoday+' amount'+amount+' remBalance'+remBalance);
+    let newTransactionInfo = {
+        accountName: 'Transfer From: ' +accountNameFrom + ' To: '+ accountNameTo,
+        fullName: fullName,
+        datetoday: datetoday,
+        amount: amount,
+        remBalance: remBalance,
+    };
+    return newTransactionInfo;
+}
 //withdrawal
 document.getElementById("submit-withdraw").onclick = function() {
     let newBal = 0, newBalance = 0.00;
@@ -366,9 +408,6 @@ document.getElementById("submit-withdraw").onclick = function() {
     });
     newBalance = parseFloat(newBal).toFixed(2);
     newBalance -= amount;
-    console.log(amount);
-    console.log(newBal);
-    console.log(newBalance);
     if(account == 'none'){
         alert('Please Select an Account.');
     }
@@ -430,7 +469,7 @@ document.getElementById("submit-deposit").onclick = function() {
                 addTransaction(amountValue, transactType, account);
                 updateAccountTransact(amountValue, account);
                 let transactInfo = getTransactionInfo(account, amountValue);
-                viewReceipt(transactInfo, 'Withdrawal Complete');
+                viewReceipt(transactInfo, 'Deposit Complete');
                 document.getElementById("modal-deposit").style.display = "none";
             }
         }
@@ -455,16 +494,14 @@ document.getElementById("submit-transfer").onclick = function() {
         return users.userID == document.getElementById("user-id").value;
     });
     let filteredAccount = filteredAccountUser.filter(function (accounts){
-        return accounts.accountID == selectfrom;
+        return accounts.accountID == accountfrom;
     });
     filteredAccount.forEach(function (accounts) {
         newBal = accounts.balance;
     });
     newBalance = parseFloat(newBal).toFixed(2);
-    newBalance -= amount;
-    console.log(amount);
-    console.log(newBal);
     console.log(newBalance);
+    newBalance -= amount;
     if(accountfrom == 'none' || accountto == 'none'){
         alert('Please Select an Account.');
     }
@@ -472,6 +509,7 @@ document.getElementById("submit-transfer").onclick = function() {
         alert('You are transfering to the same account.');
     }
     else if(amount != ''){
+        console.log(newBalance);
         if(isNaN(amount)){
             alert('Invalid amount.');
         }
@@ -492,7 +530,7 @@ document.getElementById("submit-transfer").onclick = function() {
                 addTransaction(amountValue, transactType, accountto);
                 updateAccountTransact(withamount, accountfrom);
                 updateAccountTransact(amountValue, accountto);
-                let transactInfofrom = getTransactionInfo(accountfrom, amountValue);
+                let transactInfofrom = getTransactionTransferInfo(accountfrom, accountto, amountValue);
                 viewReceipt(transactInfofrom, 'Transfer Complete');
                 document.getElementById("modal-transfer").style.display = "none";
             }
@@ -544,7 +582,7 @@ function viewAccount(id, name, balance, status){
     let filteredAccount = TRANSACTION.filter(function (transact){
         return transact.userID == document.getElementById("user-id").value;
     });
-    console.log(filteredAccount);
+    //console.log(filteredAccount);
     let filteredTransactions = filteredAccount.filter(function (transact){
         return transact.account == id;
     });
@@ -764,6 +802,7 @@ document.getElementById("profile-update").onclick = function() {
 
 //update user
 document.getElementById("submit-user-edit").addEventListener('click', function(){
+    let fullname = "";
     if(document.getElementById("first-name-edit").value == '' && document.getElementById("last-name-edit").value == '' &&
     document.getElementById("email-address-edit").value == ''){
         alert('Please fill up all field.');
@@ -779,8 +818,10 @@ document.getElementById("submit-user-edit").addEventListener('click', function()
             users.email = document.getElementById("email-address-edit").value;
         });
         alert('Update Success.');
+        fullname = document.getElementById("first-name-edit").value + " " + document.getElementById("last-name-edit").value;
         document.getElementById("transaction-area").style.display = 'block';
         document.getElementById("profile-area").style.display = 'none';
+        document.getElementById("profile-update").innerHTML = `Hello, ${fullname}`;
     }
 });
 
@@ -877,6 +918,7 @@ document.getElementById("submit-login").addEventListener('click', function(){
             }
             else{
                 document.getElementById("login-area").style.display = 'none';
+                alert(`WELCOME, ${fullname}`);
                 if(usertype === 1){
                     document.getElementById("profile-update").innerHTML = "";
                     document.getElementById("profile-update").innerHTML = `Hello, ${fullname}`;
@@ -894,17 +936,26 @@ document.getElementById("submit-login").addEventListener('click', function(){
             }
             //document.getElementById('user-greetings').innerHTML = "WELCOME " + ; add ng function sa user table para iview yung full name
         }
-        else if(attempt >= 3){
-            filteredUser.forEach(function (users) {
-                users.status = 'Freeze';
-            });
-            alert('Your account is Frozen. Please contact your administrator to unfreeze your account'); 
-        }
-        else{
-            filteredUser.forEach(function (users) {
-                users.attemptLogin += 1;
-            });
+        else if(usertype == 0){
             alert('Wrong Username or Password.'); 
+        }
+        else if(usertype == 1){
+            if(status=='Freeze'){
+                alert('Your account is Frozen. Please contact your administrator to unfreeze your account'); 
+            }
+            else if(attempt >= 3){
+                filteredUser.forEach(function (users) {
+                    users.status = 'Freeze';
+                });
+                alert('Your account is Frozen. Please contact your administrator to unfreeze your account'); 
+            }
+            else{
+                filteredUser.forEach(function (users) {
+                    users.attemptLogin += 1;
+                });
+                //console.log('user1');
+                alert('Wrong Username or Password.'); 
+            }
         }
     }
     else{
@@ -1018,7 +1069,7 @@ document.getElementById("submit-register-admin").addEventListener('click', funct
         let filteredUser = USERTABLE.filter(function (users){
             return users.userName == document.getElementById("user-name-admin").value;
         });
-        console.log(USERTABLE.length);
+        //console.log(USERTABLE.length);
         if(USERTABLE.length >= 6){
             alert('Can only add up to 5 users.');
         }
@@ -1082,45 +1133,47 @@ function viewTableUser(){
         return accounts.userID == document.getElementById("user-id").value;
     });
     let accountTableLength = filteredAccount.length;
+    console.log(accountTableLength);
     let i = 0, count = 1, countUser = 3;
     document.getElementById("view-account1").style.display = 'none';
     document.getElementById("view-account2").style.display = 'none';
     document.getElementById("view-account3").style.display = 'none';
-    if(accountTableLength < 3){
-        countUser = filteredAccount.length;
-    }
-    if(countUser > 0){
-        while(i<countUser){
-            /*if(USERTABLE[i].userID == document.getElementById("user-id").value){
-                i++;
-            }
-            else{*/
-            if(i==0){
-                document.getElementById("account-id1").innerHTML = `${filteredAccount[i].accountID}`;
-                document.getElementById("account-name1").innerHTML = `${filteredAccount[i].accountName}`;
-                document.getElementById("balance1").innerHTML = `${filteredAccount[i].balance}`;
-                document.getElementById("status1").innerHTML = `${filteredAccount[i].status}`;
-                document.getElementById("view-account1").style.display = 'block';
-                i++;
-            }
-            else if(i==1){
-                document.getElementById("account-id2").innerHTML = `${filteredAccount[i].accountID}`;
-                document.getElementById("account-name2").innerHTML = `${filteredAccount[i].accountName}`;
-                document.getElementById("balance2").innerHTML = `${filteredAccount[i].balance}`;
-                document.getElementById("status2").innerHTML = `${filteredAccount[i].status}`;
-                document.getElementById("view-account2").style.display = 'block';
-                i++;
-            }
-            else if(i==2){
-                document.getElementById("account-id3").innerHTML = `${filteredAccount[i].accountID}`;
-                document.getElementById("account-name3").innerHTML = `${filteredAccount[i].accountName}`;
-                document.getElementById("balance3").innerHTML = `${filteredAccount[i].balance}`;
-                document.getElementById("status3").innerHTML = `${filteredAccount[i].status}`;
-                document.getElementById("view-account3").style.display = 'block';
-                i++;
+    if(accountTableLength != 0){
+        if(accountTableLength < 3){
+            countUser = filteredAccount.length;
+        }
+        if(countUser > 0){
+            while(i<countUser){
+                /*if(USERTABLE[i].userID == document.getElementById("user-id").value){
+                    i++;
+                }
+                else{*/
+                if(i==0){
+                    document.getElementById("account-id1").innerHTML = `${filteredAccount[i].accountID}`;
+                    document.getElementById("account-name1").innerHTML = `${filteredAccount[i].accountName}`;
+                    document.getElementById("balance1").innerHTML = `${filteredAccount[i].balance}`;
+                    document.getElementById("status1").innerHTML = `${filteredAccount[i].status}`;
+                    document.getElementById("view-account1").style.display = 'block';
+                    i++;
+                }
+                else if(i==1){
+                    document.getElementById("account-id2").innerHTML = `${filteredAccount[i].accountID}`;
+                    document.getElementById("account-name2").innerHTML = `${filteredAccount[i].accountName}`;
+                    document.getElementById("balance2").innerHTML = `${filteredAccount[i].balance}`;
+                    document.getElementById("status2").innerHTML = `${filteredAccount[i].status}`;
+                    document.getElementById("view-account2").style.display = 'block';
+                    i++;
+                }
+                else if(i==2){
+                    document.getElementById("account-id3").innerHTML = `${filteredAccount[i].accountID}`;
+                    document.getElementById("account-name3").innerHTML = `${filteredAccount[i].accountName}`;
+                    document.getElementById("balance3").innerHTML = `${filteredAccount[i].balance}`;
+                    document.getElementById("status3").innerHTML = `${filteredAccount[i].status}`;
+                    document.getElementById("view-account3").style.display = 'block';
+                    i++;
+                }
             }
         }
-        
     }    
     /*
     for (let i = 0; i < ACCOUNTTABLE.length; i++) {
@@ -1148,7 +1201,7 @@ function viewTableAdmin(){
     }
     if(countUser > 0){
         while(i<countUser){
-            console.log(i);
+            //console.log(i);
             if(i==0){
                 document.getElementById("admin-id1").innerHTML = `${USERTABLE[i].userID}`;
                 document.getElementById("admin-name1").innerHTML = `${USERTABLE[i].firstName} ${USERTABLE[i].lastName}`;
