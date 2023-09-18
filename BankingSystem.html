@@ -17,7 +17,7 @@
 	<!--login page-->
     <div id="login-area" class="login-area-style">
       <h1>Login</h1>
-      <form action="#">
+      <div class="login">
         <div class="txt_field">
           <input id="login-username" type="text" maxlength="20"/>
           <span></span>
@@ -30,7 +30,7 @@
         </div>
 		<button id="submit-login" class="submit_link">Login</button><br/><br/>
         <button id="change-register" class="change_link">Create User</button><br/><br/>
-      </form>
+	</div>
     </div>
 
 	<!--account creation page-->
@@ -50,8 +50,8 @@
 					<span class="details">Initial Deposit:</span>
 					<input id="account-create-amount" type="text" maxlength="10" required>
 				</div>
-			</div>
-			<div class="button">
+			</div></br>
+			<div class="button" style="padding-left: 20%; padding-right: 20%;">
 				<button id="submit-account-create" class="submit_link" type="submit">Confirm</button><br/><br/>
 				<button id="cancel-account-create" class="return_link">Cancel</button><br/><br/>
 			</div>
@@ -75,8 +75,8 @@
 					<span class="details">Enter Account Name:</span>
 					<input id="account-edit-name" type="text" maxlength="30" required>
 				</div>
-			</div>
-			<div class="button">
+			</div></br>
+			<div class="button" style="padding-left: 20%; padding-right: 20%;">
 				<button id="submit-account-edit" class="submit_link" type="submit">Confirm</button><br/><br/>
 				<button id="cancel-account-edit" class="return_link">Cancel</button><br/><br/>
 			</div>
@@ -111,8 +111,8 @@
 				<div class="input-box">
 					<span class="details" id="account-edit-status-admin">Status: </span>
 				</div>
-			</div>
-			<div class="button">
+			</div></br>
+			<div class="button" style="padding-left: 20%; padding-right: 20%;">
 				<button id="submit-account-status-admin" class="change_link" type="submit"></button><br/><br/>
 				<button id="submit-account-edit-admin" class="submit_link" type="submit">Update</button><br/><br/>
 				<button id="cancel-account-edit-admin" class="return_link">Cancel</button><br/><br/>
@@ -132,7 +132,7 @@
 				<label id="account-id" style="display: none;"></label>
 				<h2>Account Name: <label id="account-name"></label></h2>
 				<h2>Balance: <label id="balance"></label></h2>
-			</div><br/>
+			</div>
 			<div class="button" style="padding-left: 20%; padding-right: 20%;">
 				<button id="edit-account" class="change_link">Update Account</button><br/>
 			</div>
@@ -182,8 +182,8 @@
 					<select id="withdraw-account" onchange="withdrawdenom(this)">
 					</select>
 				</div>
-			</div>
-			<div class="button">
+			</div></br>
+			<div class="button" style="padding-left: 20%; padding-right: 20%;">
 				<button id="submit-withdraw" class="submit_link" type="submit">Confirm</button><br/><br/>
 				<button id="close-withdraw" class="return_link">Cancel</button><br/><br/>
 			</div>
@@ -218,8 +218,8 @@
 					<select id="deposit-account" >
 					</select>
 				</div>
-			</div>
-			<div class="button">
+			</div></br>
+			<div class="button" style="padding-left: 20%; padding-right: 20%;">
 				<button id="submit-deposit" class="submit_link" type="submit">Confirm</button><br/><br/>
 				<button id="close-deposit" class="return_link">Cancel</button><br/><br/>
 			</div>
@@ -260,8 +260,8 @@
 					<span class="details">Enter Transfer Amount:	</span>
 					<input id="transfer-amount" type="text" maxlength="10" required>
 				</div>
-			</div>
-			<div class="button">
+			</div></br>
+			<div class="button" style="padding-left: 20%; padding-right: 20%;">
 				<button id="submit-transfer" class="submit_link" type="submit">Confirm</button><br/><br/>
 				<button id="close-transfer" class="return_link">Cancel</button><br/><br/>
 			</div>
@@ -319,7 +319,7 @@
 			<button id="log-out" class="log_out_link">Log Out</button>
 		</label></br>
 		<div id="view-user-buttons" class="content">
-		<form action="#">
+		<div class="content-form">
 			<div>
 			</br>
 				<div class="input-box">
@@ -337,7 +337,7 @@
 				<button id="add-transfer" class="change_link">Transfer</button>
 			  </div>
 			</div>
-		</form>
+		</div>
         </div>
         <div class="container-accounts-style">
 			<table id="container-accounts-table" class="container-accounts-table-style">
@@ -439,17 +439,17 @@
 			<button id="log-out-admin" class="log_out_link">Log Out</button>
 		</label></br>
 		<div id="view-administrator-buttons" class="content">
-		<form action="#">
-			<div>
-			</br>
-				<div class="input-box">
-				  <button id="add-user" class="change_link">Create User</button>
+			<div id="content-form">
+				<div>
+				</br>
+					<div class="input-box">
+					<button id="add-user" class="change_link">Create User</button>
+					</div>
 				</div>
-			  </div>
-			<div class="user-details">
+				<div class="user-details">
+				</div>
 			</div>
-		</form>
-        </div>
+        </div><br/>
         <div class="container-accounts-style">
 			<table id="container-accounts-table-admin" class="container-accounts-table-style">
 				<thead class="container-accounts-thead-style">
@@ -621,7 +621,7 @@
 	<div id="registration-area" class="registration-area-style">
 		<div class="title">REGISTRATION</div>
 		<div class="content">
-		  <form action="#">
+		  <div id="content-form">
 			<div class="user-details">
 			  <div class="input-box">
 				<span class="details">First Name</span>
@@ -647,12 +647,12 @@
 				<span class="details">Confirm Password</span>
 				<input id="confirm-password" type="password" maxlength="30" required>
 			  </div>
-			</div>
-			<div class="button">
+			</div><br/>
+			<div class="button" style="padding-left: 20%; padding-right: 20%;">
 				<button id="submit-register" class="submit_link" type="submit">Register</button><br/><br/>
-				<button id="return-register" class="return_link">Return</button><br/><br/>
+				<button id="return-register" class="return_link">Return</button><br/>
 			</div>
-		  </form>
+		  </div>
 		</div>
 	</div>
 	
@@ -660,7 +660,7 @@
 	<div id="registration-area-admin" class="registration-area-style">
 		<div class="title">REGISTRATION</div>
 		<div class="content">
-		  <form action="#">
+		  <div id="content-form">
 			<div class="user-details">
 			  <div class="input-box">
 				<span class="details">First Name</span>
@@ -686,12 +686,12 @@
 				<span class="details">Confirm Password</span>
 				<input id="confirm-password-admin" type="password" maxlength="30" required>
 			  </div>
-			</div>
-			<div class="button">
+			</div><br/>
+			<div class="button" style="padding-left: 20%; padding-right: 20%;">
 				<button id="submit-register-admin" class="submit_link" type="submit">Register</button><br/><br/>
-				<button id="return-register-admin" class="return_link">Return</button><br/><br/>
+				<button id="return-register-admin" class="return_link">Return</button><br/>
 			</div>
-		  </form>
+		  </div>
 		</div>
 	</div>
 	
@@ -699,7 +699,7 @@
 	<div id="profile-area" class="profile-area-style">
 		<div class="title">USER PROFILE</div>
 		<div class="content">
-		  <form action="#">
+		  <div id="content-form">
 			<div class="user-details">
 			  <div class="input-box">
 				<span class="details">First Name</span>
@@ -722,13 +722,13 @@
 				<span class="details">Confirm Password</span>
 				<input type="text" placeholder="Confirm your password" required>
 			  </div>-->
-			</div>
-			<div class="button">
+			</div></br>
+			<div class="button" style="padding-left: 20%; padding-right: 20%;">
 				<!--<button id="password-user-edit" class="change_link" type="submit">Change Password</button><br/><br/>-->
 				<button id="submit-user-edit" class="submit_link" type="submit">Update</button><br/><br/>
 				<button id="return-user-edit" class="return_link">Return</button>
 			</div>
-		  </form>
+		  </div>
 		</div>
 	</div>
 	
@@ -736,7 +736,7 @@
 	<div id="profile-area-admin" class="profile-area-style">
 		<div class="title">USER PROFILE</div>
 		<div class="content">
-		  <form action="#">
+		  <div id="content-form">
 			<div class="user-details">
 			  <div class="input-box">
 				<span class="details">First Name</span>
@@ -759,14 +759,14 @@
 				<span class="details">Confirm Password</span>
 				<input type="text" placeholder="Confirm your password" required>
 			  </div>-->
-			</div>
-			<div class="button">
+			</div></br>
+			<div class="button" style="padding-left: 20%; padding-right: 20%;">
 				<!--<button id="password-user-edit" class="change_link" type="submit">Change Password</button><br/><br/>-->
 				<button id="submit-user-freeze-admin" class="submit_link" type="submit" style="display: none;"></button><br/><br/>
 				<button id="submit-user-edit-admin" class="submit_link" type="submit">Update</button><br/><br/>
 				<button id="return-user-edit-admin" class="return_link">Return</button>
 			</div>
-		  </form>
+		  </div>
 		</div>
 	</div>
 	
