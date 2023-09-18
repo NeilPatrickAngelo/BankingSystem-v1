@@ -1,20 +1,20 @@
-const TODAYDATE = new Date().toLocaleString();
-
-const USERTABLE = [
+let USERTABLE = [];
+USERTABLE = [
 	{userID: "admin", firstName: "Neil", lastName: "Administrator", email: "admin@gmail.com", userName: "admin", password: "admin", userType: 0, status: "Unfreeze", attemptLogin: 0},
 	{userID: "user1", firstName: "Neil1", lastName: "Falceso1", email: "admin@gmail.com", userName: "user1", password: "user1", userType: 1, status: "Unfreeze", attemptLogin: 0},
 	{userID: "user2", firstName: "Neil2", lastName: "Falceso2", email: "admin@gmail.com", userName: "user2", password: "user2", userType: 1, status: "Freeze", attemptLogin: 0},
 	];
-	
-const ACCOUNTTABLE = [
+
+let ACCOUNTTABLE = [];
+/*ACCOUNTTABLE = [
 	{accountID: "account1", accountName: "My Savings1", userID: "user1", balance: 10.00, status: "Active"},
     {accountID: "account2", accountName: "My Savings2", userID: "user1", balance: 20.00, status: "Active"},
 	{accountID: "account1", accountName: "My Savings3", userID: "user2", balance: 10.00, status: "Active"},
     {accountID: "account2", accountName: "My Savings4", userID: "user2", balance: 20.00, status: "Active"},
-	];
+	];*/
 
-let TRANSACTION = new Object();
-TRANSACTION = [
+let TRANSACTION = [];
+/*TRANSACTION = [
     {transactionID: "transaction1", userID: "user1", account: "account1", amount: -1.50, transactionType: "withdrawal", transactionDate: '9/17/2023, 7:35:48 PM'},
     {transactionID: "transaction2", userID: "user1", account: "account1", amount: -.50, transactionType: "withdrawal", transactionDate: '5/17/2023, 8:36:48 PM'},
     {transactionID: "transaction3", userID: "user1", account: "account1", amount: -2.50, transactionType: "withdrawal", transactionDate: '3/30/2023, 9:35:48 AM'},
@@ -22,7 +22,7 @@ TRANSACTION = [
     {transactionID: "transaction2", userID: "user1", account: "account1", amount: -1.50, transactionType: "withdrawal", transactionDate: '2/15/2023, 5:31:48 PM'},
     {transactionID: "transaction1", userID: "user1", account: "account2", amount: -1.00, transactionType: "withdrawal", transactionDate: '4/11/2023, 1:15:48 AM'},
     {transactionID: "transaction2", userID: "user1", account: "account2", amount: -1.50, transactionType: "withdrawal", transactionDate: '2/15/2023, 5:31:48 PM'},
-    ];
+    ];*/
 
 
 
@@ -1142,6 +1142,7 @@ function viewTableAdmin(){
     document.getElementById("admin-view3").style.display = 'none';
     document.getElementById("admin-view4").style.display = 'none';
     document.getElementById("admin-view5").style.display = 'none';
+    document.getElementById("admin-view6").style.display = 'none';
     if(USERTABLE.length < 6){
         countUser = USERTABLE.length;
     }
