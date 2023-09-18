@@ -128,7 +128,7 @@
 .change_link{
   width: 100%;
   height: 50px;
-  background: #2691d9;
+  background: #266e9f;
   border-radius: 25px;
   font-size: 18px;
   color: #e9f4fb;
@@ -357,7 +357,7 @@ body{
   justify-content: center;
   align-items: center;
   padding: 10px;
-  background: linear-gradient(135deg, #71b7e6, #9b59b6);
+  background: linear-gradient(135deg, #c0bac3, #c0bac3);
 }
 .registration-area-style{
   display: none;
@@ -579,7 +579,7 @@ body{
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
-  padding-top: 25%; /* Location of the box */
+  padding-top: 10%; /* Location of the box */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -660,7 +660,7 @@ body{
 
 .modal-header {
   padding: 2px 16px;
-  background-color: #5cb85c;
+  background-color: #36304a;
   color: white;
 }
 
@@ -677,6 +677,11 @@ body{
   float: right;
 }
 .profile_link{
+  text-align: left;
   float: left;
-  width: 200px;
+  width: 300px;
+}
+h2{
+  text-align: center;
+  font-size: 25px;
 }
