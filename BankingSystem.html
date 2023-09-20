@@ -77,7 +77,7 @@
 				</div>
 			</div></br>
 			<div class="button" style="padding-left: 20%; padding-right: 20%;">
-				<button id="submit-account-edit" class="submit_link" type="submit">Confirm</button><br/><br/>
+				<button id="submit-account-edit1" class="submit_link" type="submit">Confirm</button><br/><br/>
 				<button id="cancel-account-edit" class="return_link">Cancel</button><br/><br/>
 			</div>
 			<!--<div class="modal-footer">
@@ -123,28 +123,29 @@
 		</div>
 	</div>
 
-	<!--view account page-->
+	<!--view account page user-->
 	<!-- The Modal -->
 	<div id="modal-account" class="modal">
 		<div class="modal-content-account">
 			<div class="modal-header">
 				<span id="close-account" class="close">&times;</span>
-				<label id="account-id" style="display: none;"></label>
-				<h2>Account Name: <label id="account-name"></label></h2>
+				<input id="account-id" style="display: none;"></label>
+				<h2>Account Name: <input id="account-name" maxlength="20" style="height: 25px; font-size: 15px; width: 180px;"></h2>
 				<h2>Balance: <label id="balance"></label></h2>
 			</div>
-			<div class="button" style="padding-left: 20%; padding-right: 20%;">
-				<button id="edit-account" class="change_link">Update Account</button><br/>
+			<div class="button" style="padding-left: 20%; padding-right: 20%; padding-top: 10px;">
+				<button id="submit-account-edit" class="submit_link" type="submit">Update Account</button><br/>
 			</div>
 			<div class="modal-body">
 				<div class="container-transaction-style">
-					<table id="container-transaction-table" class="container-transaction-table-style">
+					<table id="container-transaction-table" class="container-transaction-style">
 						<thead class="container-transaction-thead-style">
 							<tr class="container-transaction-heading-style">
 								<!--<th class="column1">#</th>-->
 								<th class="column1">Type</th>
 								<th class="column2">Amount</th>
 								<th class="column3">Date</th>
+								<th class="column4">VIEW</th>
 							</tr>
 						</thead>
 						<tbody id="container-transaction-table-tbody">
@@ -316,6 +317,7 @@
 		<input id="user-id" style="display: none;" value="none">
 		<label id="user-greetings" class="user_greetings">
 			<button id="profile-update" class="profile_link">Update Profile</button>
+			<button id="full-name-user" style="display: none;">Update Profile</button>
 			<button id="log-out" class="log_out_link">Log Out</button>
 		</label></br>
 		<div id="view-user-buttons" class="content">
@@ -343,86 +345,86 @@
 			<table id="container-accounts-table" class="container-accounts-table-style">
 				<thead class="container-accounts-thead-style">
 					<tr class="container-accounts-heading-style">
-						<th class="column1" style="display: none;">ACCOUNT ID</th>
-						<th class="column2">ACCOUNT NAME</th>
-						<th class="column3">BALANCE</th>
-						<th class="column4">STATUS</th>
-						<th class="column5">VIEW</th>
+						<th style="display: none;">ACCOUNT ID</th>
+						<th class="column1">ACCOUNT NAME</th>
+						<th class="column2">BALANCE</th>
+						<th class="column3">STATUS</th>
+						<th class="column4">VIEW</th>
 					</tr>
 				</thead>
 				<tbody id="container-accounts-table-tbody">
 					<tr class="container-accounts-details">
-						<td class="column1" style="display: none;">
+						<td style="display: none;">
 							<div class="input-box">
 								<span class="details" id="account-id1"></span>
 							</div>
 						</td>
-						<td class="column2">
+						<td class="column1">
 							<div class="input-box">
 								<span class="details" id="account-name1"></span>
 							</div>
 						</td>
-						<td class="column3">
+						<td class="column2">
 							<div class="input-box">
 								<span class="details" id="balance1"></span>
 							</div>
 						</td>
-						<td class="column4">
+						<td class="column3">
 							<div class="input-box">
 								<span class="details" id="status1"></span>
 							</div>
 						</td>
-						<td class="column5">
+						<td class="column4">
 							<button type="button" id="view-account1">View</button>
 						</td>
 					</tr>
 					<tr class="container-accounts-details">
-						<td class="column1" style="display: none;">
+						<td style="display: none;">
 							<div class="input-box">
 								<span class="details" id="account-id2"></span>
 							</div>
 						</td>
-						<td class="column2">
+						<td class="column1">
 							<div class="input-box">
 								<span class="details" id="account-name2"></span>
 							</div>
 						</td>
-						<td class="column3">
+						<td class="column2">
 							<div class="input-box">
 								<span class="details" id="balance2"></span>
 							</div>
 						</td>
-						<td class="column4">
+						<td class="column3">
 							<div class="input-box">
 								<span class="details" id="status2"></span>
 							</div>
 						</td>
-						<td class="column5">
+						<td class="column4">
 							<button type="button" id="view-account2">View</button>
 						</td>
 					</tr>
 					<tr class="container-accounts-details">
-						<td class="column1" style="display: none;">
+						<td style="display: none;">
 							<div class="input-box">
 								<span class="details" id="account-id3"></span>
 							</div>
 						</td>
-						<td class="column2">
+						<td class="column1">
 							<div class="input-box">
 								<span class="details" id="account-name3"></span>
 							</div>
 						</td>
-						<td class="column3">
+						<td class="column2">
 							<div class="input-box">
 								<span class="details" id="balance3"></span>
 							</div>
 						</td>
-						<td class="column4">
+						<td class="column3">
 							<div class="input-box">
 								<span class="details" id="status3"></span>
 							</div>
 						</td>
-						<td class="column5">
+						<td class="column4">
 							<button type="button" id="view-account3">View</button>
 						</td>
 					</tr>
@@ -436,6 +438,7 @@
 		<input id="admin-id" style="display: none;" value="none">
 		<label id="admin-greetings" class="user_greetings">
 			<button id="profile-update-admin" class="profile_link">Update Profile</button>
+			<button id="full-name-admin" style="display: none;">Update Profile</button>
 			<button id="log-out-admin" class="log_out_link">Log Out</button>
 		</label></br>
 		<div id="view-administrator-buttons" class="content">
@@ -454,161 +457,161 @@
 			<table id="container-accounts-table-admin" class="container-accounts-table-style">
 				<thead class="container-accounts-thead-style">
 					<tr class="container-accounts-heading-style">
-						<th class="column1" style="display: none;">USER ID</th>
-						<th class="column2">FULL NAME</th>
-						<th class="column3">USER NAME</th>
-						<th class="column4">STATUS</th>
-						<th class="column5">VIEW</th>
+						<th style="display: none;">USER ID</th>
+						<th class="column1">FULL NAME</th>
+						<th class="column2">USER NAME</th>
+						<th class="column3">STATUS</th>
+						<th class="column4">VIEW</th>
 					</tr>
 				</thead>
 				<tbody id="container-accounts-table-tbody">
 					<tr class="container-accounts-details">
-						<td class="column1" style="display: none;">
+						<td style="display: none;">
 							<div class="input-box">
 								<span class="details" id="admin-id1" style="display: none;"></span>
 							</div>
 						</td>
-						<td class="column2">
+						<td class="column1">
 							<div class="input-box">
 								<span class="details" id="admin-name1"></span>
 							</div>
 						</td>
-						<td class="column3">
+						<td class="column2">
 							<div class="input-box">
 								<span class="details" id="admin-username1"></span>
 							</div>
 						</td>
-						<td class="column4">
+						<td class="column3">
 							<div class="input-box">
 								<span class="details" id="admin-status1"></span>
 							</div>
 						</td>
-						<td class="column5">
+						<td class="column4">
 							<button type="button" id="admin-view1">View</button>
 						</td>
 					</tr>
 					<tr class="container-accounts-details">
-						<td class="column1" style="display: none;">
+						<td style="display: none;">
 							<div class="input-box">
 								<span class="details" id="admin-id2" style="display: none;"></span>
 							</div>
 						</td>
-						<td class="column2">
+						<td class="column1">
 							<div class="input-box">
 								<span class="details" id="admin-name2"></span>
 							</div>
 						</td>
-						<td class="column3">
+						<td class="column2">
 							<div class="input-box">
 								<span class="details" id="admin-username2"></span>
 							</div>
 						</td>
-						<td class="column4">
+						<td class="column3">
 							<div class="input-box">
 								<span class="details" id="admin-status2"></span>
 							</div>
 						</td>
-						<td class="column5">
+						<td class="column4">
 							<button type="button" id="admin-view2">View</button>
 						</td>
 					</tr>
 					<tr class="container-accounts-details">
-						<td class="column1" style="display: none;">
+						<td style="display: none;">
 							<div class="input-box">
 								<span class="details" id="admin-id3" style="display: none;"></span>
 							</div>
 						</td>
-						<td class="column2">
+						<td class="column1">
 							<div class="input-box">
 								<span class="details" id="admin-name3"></span>
 							</div>
 						</td>
-						<td class="column3">
+						<td class="column2">
 							<div class="input-box">
 								<span class="details" id="admin-username3"></span>
 							</div>
 						</td>
-						<td class="column4">
+						<td class="column3">
 							<div class="input-box">
 								<span class="details" id="admin-status3"></span>
 							</div>
 						</td>
-						<td class="column5">
+						<td class="column4">
 							<button type="button" id="admin-view3">View</button>
 						</td>
 					</tr>
 					<tr class="container-accounts-details">
-						<td class="column1" style="display: none;">
+						<td style="display: none;">
 							<div class="input-box">
 								<span class="details" id="admin-id4" style="display: none;"></span>
 							</div>
 						</td>
-						<td class="column2">
+						<td class="column1">
 							<div class="input-box">
 								<span class="details" id="admin-name4"></span>
 							</div>
 						</td>
-						<td class="column3">
+						<td class="column2">
 							<div class="input-box">
 								<span class="details" id="admin-username4"></span>
 							</div>
 						</td>
-						<td class="column4">
+						<td class="column3">
 							<div class="input-box">
 								<span class="details" id="admin-status4"></span>
 							</div>
 						</td>
-						<td class="column5">
+						<td class="column4">
 							<button type="button" id="admin-view4">View</button>
 						</td>
 					</tr>
 					<tr class="container-accounts-details">
-						<td class="column1" style="display: none;">
+						<td style="display: none;">
 							<div class="input-box">
 								<span class="details" id="admin-id5" style="display: none;"></span>
 							</div>
 						</td>
-						<td class="column2">
+						<td class="column1">
 							<div class="input-box">
 								<span class="details" id="admin-name5"></span>
 							</div>
 						</td>
-						<td class="column3">
+						<td class="column2">
 							<div class="input-box">
 								<span class="details" id="admin-username5"></span>
 							</div>
 						</td>
-						<td class="column4">
+						<td class="column3">
 							<div class="input-box">
 								<span class="details" id="admin-status5"></span>
 							</div>
 						</td>
-						<td class="column5">
+						<td class="column4">
 							<button type="button" id="admin-view5">View</button>
 						</td>
 					</tr>
 					<tr class="container-accounts-details">
-						<td class="column1" style="display: none;">
+						<td style="display: none;">
 							<div class="input-box">
 								<span class="details" id="admin-id" style="display: none;"></span>
 							</div>
 						</td>
-						<td class="column2">
+						<td class="column1">
 							<div class="input-box">
 								<span class="details" id="admin-name6"></span>
 							</div>
 						</td>
-						<td class="column3">
+						<td class="column2">
 							<div class="input-box">
 								<span class="details" id="admin-username6"></span>
 							</div>
 						</td>
-						<td class="column4">
+						<td class="column3">
 							<div class="input-box">
 								<span class="details" id="admin-status6"></span>
 							</div>
 						</td>
-						<td class="column5">
+						<td class="column4">
 							<button type="button" id="admin-view6">View</button>
 						</td>
 					</tr>
