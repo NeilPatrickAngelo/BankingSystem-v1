@@ -14,16 +14,24 @@ ACCOUNTTABLE = [
 	];
 
 let TRANSACTION = [];
-/*TRANSACTION = [
-    {transactionID: "transaction1", userID: "user1", account: "account1", amount: -1.50, transactionType: "withdrawal", transactionDate: '9/17/2023, 7:35:48 PM'},
-    {transactionID: "transaction2", userID: "user1", account: "account1", amount: -.50, transactionType: "withdrawal", transactionDate: '5/17/2023, 8:36:48 PM'},
-    {transactionID: "transaction3", userID: "user1", account: "account1", amount: -2.50, transactionType: "withdrawal", transactionDate: '3/30/2023, 9:35:48 AM'},
-    {transactionID: "transaction4", userID: "user1", account: "account1", amount: -1.00, transactionType: "withdrawal", transactionDate: '8/20/2023, 1:35:48 PM'},
-    {transactionID: "transaction2", userID: "user1", account: "account1", amount: -1.50, transactionType: "withdrawal", transactionDate: '2/15/2023, 5:31:48 PM'},
-    {transactionID: "transaction1", userID: "user1", account: "account2", amount: -1.00, transactionType: "withdrawal", transactionDate: '4/11/2023, 1:15:48 AM'},
-    {transactionID: "transaction2", userID: "user1", account: "account2", amount: -1.50, transactionType: "withdrawal", transactionDate: '2/15/2023, 5:31:48 PM'},
-    ];*/
+TRANSACTION = [
+    {transactionID: "14", userID: "user1", account: "account1", amount: '-1.50', transactionType: "withdrawal", transactionDate: '9/17/2023, 7:35:48 PM'},
+    {transactionID: "13", userID: "user1", account: "account1", amount: '-.50', transactionType: "withdrawal", transactionDate: '5/17/2023, 8:36:48 PM'},
+    {transactionID: "12", userID: "user1", account: "account1", amount: '-2.50', transactionType: "transfer", transactionDate: '3/30/2023, 9:35:48 AM'},
+    {transactionID: "11", userID: "user1", account: "account1", amount: '-1.00', transactionType: "withdrawal", transactionDate: '8/20/2023, 1:35:48 PM'},
+    {transactionID: "10", userID: "user1", account: "account1", amount: '-1.50', transactionType: "withdrawal", transactionDate: '2/15/2023, 5:31:48 PM'},
+    {transactionID: "9", userID: "user1", account: "account1", amount: '-1.00', transactionType: "withdrawal", transactionDate: '4/11/2023, 1:15:48 AM'},
+    {transactionID: "8", userID: "user1", account: "account1", amount: '-1.50', transactionType: "withdrawal", transactionDate: '2/15/2023, 5:31:48 PM'},
+    {transactionID: "7", userID: "user1", account: "account1", amount: '1.50', transactionType: "transfer", transactionDate: '10/15/2022, 5:31:48 PM'},
+    {transactionID: "6", userID: "user1", account: "account1", amount: '1.50', transactionType: "transfer", transactionDate: '10/15/2022, 5:31:48 PM'},
+    {transactionID: "5", userID: "user1", account: "account1", amount: '1.50', transactionType: "transfer", transactionDate: '10/15/2022, 5:31:48 PM'},
+    {transactionID: "4", userID: "user1", account: "account1", amount: '1.50', transactionType: "transfer", transactionDate: '10/15/2022, 5:31:48 PM'},
+    {transactionID: "3", userID: "user1", account: "account1", amount: '1.50', transactionType: "transfer", transactionDate: '10/15/2022, 5:31:48 PM'},
+    {transactionID: "2", userID: "user1", account: "account1", amount: '1.50', transactionType: "transfer", transactionDate: '10/15/2022, 5:31:48 PM'},
+    {transactionID: "1", userID: "user1", account: "account1", amount: '1.50', transactionType: "transfer", transactionDate: '10/15/2022, 5:31:48 PM'},
+    ];
 
+let LOGHISTORY = [];
 
 
 //update user
@@ -248,18 +256,19 @@ function addTransaction(amount, transactType, accountId){
     let countTransaction = filteredTransactions.length + 1;
     let datetoday = new Date().toLocaleString();
     let newTransaction = {
-        transactionID: 'transaction'+countTransaction,
+        transactionID: ''+countTransaction,
         userID: document.getElementById("user-id").value,
         account: accountId,
         amount: admountValue,
         transactionType: transactType,
         transactionDate: datetoday,
     };
-    TRANSACTION.push(newTransaction);
+    TRANSACTION.unshift(newTransaction);
 }
 
 //view Receipt after transaction
 function viewReceipt(transactInfo, transactionType){
+    console.log(transactInfo);
     document.getElementById("modal-receipt").style.display = "block";
     document.getElementById("receipt-title").textContent = transactionType;
     document.getElementById("receipt-account").textContent = transactInfo.accountName;
@@ -274,18 +283,22 @@ document.getElementById("receipt-close-x").onclick = function() {
 }
 
 //view Receipt in Account table
-function viewReceiptAccount(transactInfo, transactionType){
+function viewReceiptAccount(accountName, fullName, dateTransact, amount, remBalance, transactionType){
     document.getElementById("modal-receipt").style.display = "block";
     document.getElementById("receipt-title").textContent = transactionType;
-    document.getElementById("receipt-account").textContent = transactInfo.accountName;
-    document.getElementById("receipt-name").textContent = transactInfo.fullName;
-    document.getElementById("receipt-date").textContent = transactInfo.datetoday;
-    document.getElementById("receipt-amount").textContent = transactInfo.amount;
-    document.getElementById("receipt-balance").textContent = transactInfo.remBalance;
+    document.getElementById("receipt-account").textContent = accountName;
+    document.getElementById("receipt-name").textContent = fullName;
+    document.getElementById("receipt-date").textContent = dateTransact;
+    document.getElementById("receipt-amount").textContent = amount;
+    document.getElementById("receipt-balance").textContent = remBalance;
+}
+
+document.getElementById("receipt-close-x").onclick = function() {
+    document.getElementById("modal-receipt").style.display = "none";
 }
 
 //get transaction info
-function getTransactionInfoAccount(transactionId, accountId, userId, amount, date){
+function getTransactionInfoAccount(accountId, amount){
     let datetoday = new Date().toLocaleString();
     let fullName = "", accountID = "", accountName = "", remBalance = "";
     let filteredUser = USERTABLE.filter(function (users){
@@ -575,7 +588,8 @@ document.getElementById("view-account3").addEventListener('click', function(){
 });
 
 //for viewing the account
-function viewAccount(id, name, balance, status){
+function viewAccount(id, name, balance){
+    let TRANSACTIONHISTORY = [];
     document.getElementById("modal-account").style.display = "block";
     //console.log('Id and Name: '+id, name);
     document.getElementById("container-transaction-table-tbody").innerHTML = "";
@@ -587,25 +601,70 @@ function viewAccount(id, name, balance, status){
         return transact.account == id;
     });
     let filteredTransactionsSlice = filteredTransactions.slice(0,10);
-    filteredTransactionsSlice.forEach(function (transaction) {
+    let filteredTransactionsSliceSize = filteredTransactionsSlice.length;
+    //console.log(filteredTransactionsSlice);
+    /*filteredTransactionsSlice.forEach(function (transaction) {
+        receiptInfo = {
+            accountName: name,
+            fullName: 'Neil Patrick Falceso',
+            datetoday: transaction.transactionDate,
+            amount: transaction.amount,
+            remBalance: balance,
+        };
+        console.log(receiptInfo);
         /*console.log(`No. ${index + 1}:`);
         console.log(`Id: ${transaction.transactionID}`);
         console.log(`Type: ${transaction.transactionType}`);
         console.log(`Amount: ${transaction.amount}`);
         console.log(`Date: ${transaction.transactionDate}`);
-        console.log("--------------");*/
+        console.log("--------------");
         document.getElementById("container-transaction-table-tbody").innerHTML+= `<tr class="container-accounts-details">` +
         `<td class="column1">${transaction.transactionType}</td><td class="column2">${transaction.amount}</td>` +
-        `<td class="column3">${transaction.transactionDate}</td></tr>`
-    });
-    document.getElementById("account-id").innerHTML = id;
-    document.getElementById("account-name").innerHTML = name;
+        `<td class="column3">${transaction.transactionDate}</td><td class="column4">` +
+        `<button type="button" id="view-account" onclick="viewReceipt('Neil' , ${transaction.transactionType});">View</button></td></tr>`
+    });*/
+    for(let i = 0; i < filteredTransactionsSliceSize; i ++){
+        let count = i + 1;
+        let typeId = 'typeId'+count, amountId = 'amountId'+count, dateId = 'dateId'+count, accountNameId = 'accountNameId'+count, buttonId = 'buttonId'+count;
+        let receiptInfo = {
+            accountName: name,
+            fullName: document.getElementById("full-name-user").textContent,
+            datetoday: filteredTransactionsSlice[i].transactionDate,
+            amount: filteredTransactionsSlice[i].amount,
+            remBalance: balance,
+        };
+        let accountName = ""+name;
+        let infoSelect = '"'+name+'","'+document.getElementById("full-name-user").textContent+'","' +
+        filteredTransactionsSlice[i].transactionDate+'","'+filteredTransactionsSlice[i].amount+'","'+balance+'","'+
+        filteredTransactionsSlice[i].transactionType+'"';
+        let typeSelect = 'document.getElementById("'+typeId+'").textContent';
+        TRANSACTIONHISTORY.unshift(receiptInfo);
+        document.getElementById("container-transaction-table-tbody").innerHTML+= "<tr class='container-accounts-details'>" +
+        "<td id='"+typeId+"' class='column1'>"+filteredTransactionsSlice[i].transactionType+"</td><td id='"+amountId+"' class='column2'>"+filteredTransactionsSlice[i].amount+"</td>" +
+        "<td id='"+dateId+"' class='column3'>"+filteredTransactionsSlice[i].transactionDate+"</td><td></td"+
+        "<td class='column4'><button type='button' id='"+buttonId+"' onclick='viewReceiptAccount("+infoSelect+")'>View</button></td></tr>"
+    }
+    document.getElementById("account-id").value = id;
+    document.getElementById("account-name").value = name;
     document.getElementById("balance").innerHTML = balance;
 }
 
 document.getElementById("close-account").onclick = function() {
     document.getElementById("modal-account").style.display = "none";
 }
+
+//for viewing transactions per account
+function viewTransactions(){
+
+}
+
+//view user ni admin
+document.getElementById("admin-view1").addEventListener('click', function(){
+    let id = document.getElementById("admin-id1").textContent;
+    //console.log(id);
+    viewAccountAdmin(id);
+    //document.getElementById('modal-withdrawal').style.display = "block";
+});
 
 //view user ni admin
 document.getElementById("admin-view1").addEventListener('click', function(){
@@ -750,12 +809,12 @@ document.getElementById("submit-account-create").onclick = function() {
 }
 
 //edit account yung name lang iedit
-document.getElementById("edit-account").addEventListener('click', function(){
+/*document.getElementById("edit-account").addEventListener('click', function(){
     document.getElementById("account-edit-id").value = document.getElementById("account-id").textContent;
     document.getElementById("account-edit-name").value = document.getElementById("account-name").textContent;
     document.getElementById("modal-account-edit").style.display = 'block';
     document.getElementById("modal-account").style.display = "none";
-});
+});*/
 
 document.getElementById("close-account-edit").onclick = function() {
     document.getElementById("modal-account-edit").style.display = "none";
@@ -766,22 +825,28 @@ document.getElementById("cancel-account-edit").onclick = function() {
 }
 
 document.getElementById("submit-account-edit").onclick = function() {
-    if(document.getElementById("account-edit-name").value == ''){
+    console.log('here');
+    if(document.getElementById("account-name").value == ''){
         alert('Please fill in all fields.');
     }
     else{
+        let accountNameNew = '';
         let filteredUser = ACCOUNTTABLE.filter(function (accounts){
             return accounts.userID == document.getElementById("user-id").value;
         });
+        console.log(filteredUser);
         let filteredAccount = filteredUser.filter(function (accounts){
-            return accounts.accountID == document.getElementById("account-edit-id").value;
+            return accounts.accountID == document.getElementById("account-id").value;
         });
+        console.log(document.getElementById("account-id").value);
         filteredAccount.forEach(function (accounts) {
-            accounts.accountName = document.getElementById("account-edit-name").value;
-        });
+            accounts.accountName = document.getElementById("account-name").value;
+        }); 
+        accountNameNew = document.getElementById("account-name").value;
+        console.log(document.getElementById("account-id").value, accountNameNew, document.getElementById("balance").textContent);
         viewTableUser();
         alert('Account updated.');
-        document.getElementById("modal-account-edit").style.display = "none";
+        viewAccount(document.getElementById("account-id").value,  accountNameNew, document.getElementById("balance").textContent)
     }
 }
 
@@ -822,6 +887,7 @@ document.getElementById("submit-user-edit").addEventListener('click', function()
         document.getElementById("transaction-area").style.display = 'block';
         document.getElementById("profile-area").style.display = 'none';
         document.getElementById("profile-update").innerHTML = `Hello, ${fullname}`;
+        document.getElementById("full-name-admin").innerHTML = `${fullname}`;
     }
 });
 
@@ -921,14 +987,16 @@ document.getElementById("submit-login").addEventListener('click', function(){
                 alert(`WELCOME, ${fullname}`);
                 if(usertype === 1){
                     document.getElementById("profile-update").innerHTML = "";
-                    document.getElementById("profile-update").innerHTML = `Hello, ${fullname}`;
+                    document.getElementById("profile-update").innerHTML = `Hello ${fullname}`;
+                    document.getElementById("full-name-user").innerHTML = `${fullname}`;
                     document.getElementById("user-id").value = userId;
                     document.getElementById("transaction-area").style.display = 'block';
                     viewTableUser();
                 }
                 else if(usertype === 0){
                     document.getElementById("profile-update-admin").innerHTML = "";
-                    document.getElementById("profile-update-admin").innerHTML = `Hello, ${fullname}`;
+                    document.getElementById("profile-update-admin").innerHTML = `Hello ${fullname}`;
+                    document.getElementById("full-name-admin").innerHTML = `${fullname}`;
                     document.getElementById("admin-id").value = userId;
                     document.getElementById("transaction-area-admin").style.display = 'block';
                     viewTableAdmin();
