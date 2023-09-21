@@ -128,7 +128,7 @@
 .change_link{
   width: 100%;
   height: 50px;
-  background: #266e9f;
+  background: #2197e6;
   border-radius: 25px;
   font-size: 18px;
   color: #e9f4fb;
@@ -139,7 +139,7 @@
   border: none;
 }
 .change_link {
-  border-color: #2691d9;
+  border-color: #2197e6;
 }
 .return_link{
   width: 100%;
@@ -243,7 +243,7 @@ input[type="submit"]:hover {
 }
 .container-transaction-thead-style{
 	height: 60px;
-    background: #36304a;
+    background: #615e6b;
     font-family: OpenSans-Regular;
     font-size: 18px;
     color: #fff;
