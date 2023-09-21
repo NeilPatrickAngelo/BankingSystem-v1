@@ -266,7 +266,7 @@
 
 	<!--view account page user-->
 	<!-- The Modal -->
-	<div id="modal-account" class="modal">
+	<div id="modal-account" class="modal-account">
 		<div class="modal-content-account">
 			<div class="modal-header">
 				<span id="close-account" class="close">&times;</span>
@@ -326,6 +326,30 @@
 				</div>
 			</div>
 		</div>
+	</div>-->
+	
+	<!--for password pin code for withdrawal only-->
+	<!-- The Modal -->
+	<div id="modal-password-withdrawal" class="modal" >
+		<!-- Modal content -->
+		<div class="modal-content-account" style="width: 300px;">
+			<div class="modal-header">
+				<span id="close-password-withdrawal-x" class="close">&times;</span>
+				<h2>Enter your password.</h2>
+			</div>
+			<div class="modal-body">
+				<div class="input-box" style="padding-left: 25px; padding-right: 25px;">
+					<input id="password-input-withdrawal" style="width:100%; height: 30px;" type="password" maxlength="30">
+				</div>
+			</div></br>
+			<div class="button" style="padding-left: 25px; padding-right: 25px;">
+				<button style="height: 40px;" id="submit-password-withdrawal" class="change_link" type="submit">Confirm</button><br/><br/>
+				<button style="height: 40px;" id="close-password-profile" class="return_link">Cancel</button><br/><br/>
+			</div>
+			<!--<div class="modal-footer">
+				<h3>Modal Footer</h3>
+			</div>-->
+		</div>
 	</div>
 
 	<!--withdrawal page-->
@@ -339,6 +363,11 @@
 			</div>
 			<div class="modal-body">
 				<div class="input-box">
+					<div class="input-box">
+						<span class="details">Select Account:	</span>
+						<select id="withdraw-account" onchange="withdrawdenom(this)">
+						</select>
+					</div>
 					<span class="details" id="withdraw-balance">Available Balance:</span></br>
 					<span class="details">Available Denominations	</span></br>
 					<span class="details" id="withdraw-twentyfive">25 cents:	</span></br>
@@ -347,12 +376,13 @@
 				</div>
 				<div class="input-box">
 					<span class="details">Enter Withdrawal Amount:	</span>
-					<input id="withdraw-amount" type="text"  maxlength="10" required>
-				</div>
-				<div class="input-box">
-					<span class="details">Select Account:	</span>
-					<select id="withdraw-account" onchange="withdrawdenom(this)">
-					</select>
+					<input id="withdraw-amount" type="text" maxlength="10"></br>
+					<span class="details">25c:	</span>
+					<input id="withdraw-amount-25" type="text" onchange="withdrawdenom(this)" maxlength="10"></br>
+					<span class="details">10c:	</span>
+					<input id="withdraw-amount-10" type="text" onchange="withdrawdenom(this)" maxlength="10"></br>
+					<span class="details">5c:	</span>
+					<input id="withdraw-amount-05" type="text" onchange="withdrawdenom(this)" maxlength="10"></br>
 				</div>
 			</div></br>
 			<div class="button" style="padding-left: 20%; padding-right: 20%;">
