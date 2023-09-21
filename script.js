@@ -32,16 +32,6 @@ TRANSACTION = [
     {transactionID: "1", userID: "user1", account: "account2", amount: '1.50', transactionType: "transfer", transactionDate: '10/15/2022, 5:31:48 PM'},
     ];
 
-let LOGHISTORY = [];
-
-
-//update user
-function userUpdate(userId, firstName, lastName, userName, email, password){
-}
-
-//add user
-function userAdd(){
-}
 
 //account Dropdown
 function dropDownAccounts(type){
@@ -339,7 +329,7 @@ function addTransaction(amount, transactType, accountId, adminid){
 
 //view Receipt after transaction
 function viewReceipt(transactInfo, transactionType){
-    console.log(transactInfo);
+    //console.log(transactInfo);
     document.getElementById("modal-receipt").style.display = "block";
     document.getElementById("receipt-title").textContent = transactionType;
     document.getElementById("receipt-account").textContent = transactInfo.accountName;
@@ -406,7 +396,7 @@ function getTransactionInfoAccount(accountId, amount, name){
 function getTransactionInfo(accountId, amount, adminid){
     console.log('accountId'+accountId);
     let datetoday = new Date().toLocaleString(), admin = adminid;
-    let fullName = "", userID = "", accountName = "", remBalance = "";
+    let fullName = "", userID = "", accountNumber = "", remBalance = "";
     let filteredAccount = ACCOUNTTABLE.filter(function (accounts){
         return accounts.accountID == accountId;
     });
@@ -432,15 +422,15 @@ function getTransactionInfo(accountId, amount, adminid){
         });
     }
     filteredAccount.forEach(function (accounts) {
-        accountName = accounts.accountName;
+        accountNumber = accounts.accountNumber;
         remBalance = accounts.balance;
     });
     if(amount > 0){
         amount = '+' + amount;
     }
-    console.log('accountName'+accountName+'adminid'+adminid+' fullName'+fullName+' datetoday'+datetoday+' amount'+amount+' remBalance'+remBalance);
+    console.log('accountName'+accountNumber+'adminid'+adminid+' fullName'+fullName+' datetoday'+datetoday+' amount'+amount+' remBalance'+remBalance);
     let newTransactionInfo = {
-        accountName: accountName,
+        accountName: accountNumber,
         fullName: fullName,
         datetoday: datetoday,
         amount: amount,
@@ -451,7 +441,7 @@ function getTransactionInfo(accountId, amount, adminid){
 
 function getTransactionTransferInfo(accountFrom, accountTo, amount){
     let datetoday = new Date().toLocaleString();
-    let fullName = "", accountID = "", accountNameFrom = "", accountNameTo = "", remBalance = "";
+    let fullName = "", accountID = "", accountNumberFrom = "", accountNumberTo = "", remBalance = "";
     let filteredUser = USERTABLE.filter(function (users){
         return users.userID == document.getElementById("user-id").value;
     });
@@ -471,15 +461,15 @@ function getTransactionTransferInfo(accountFrom, accountTo, amount){
         return accounts.accountID == accountTo;
     });
     filteredAccountNameFrom.forEach(function (accounts) {
-        accountNameFrom = accounts.accountName;
+        accountNumberFrom = accounts.accountNumber;
         remBalance = accounts.balance;
     });
     filteredAccountNameTo.forEach(function (accounts) {
-        accountNameTo = accounts.accountName;
+        accountNumberTo = accounts.accountNumber;
     });
     //console.log('accountName'+accountName+' fullName'+fullName+' datetoday'+datetoday+' amount'+amount+' remBalance'+remBalance);
     let newTransactionInfo = {
-        accountName: 'Transfer From: ' +accountNameFrom + ' To: '+ accountNameTo,
+        accountName: 'Transfer From: ' +accountNumberFrom + ' To: '+ accountNumberTo,
         fullName: fullName,
         datetoday: datetoday,
         amount: amount,
@@ -510,7 +500,8 @@ document.getElementById("submit-withdraw").onclick = function() {
     });
     console.log(status);
     if(status == 'Freeze'){
-        alert('Cannot do withdrawals. Account is Frozen.');
+        alert('Cannot do withdrawals. Account is Frozen..\n'+
+        'Please Contact your Administrator.');
     }
     else{
         filteredTransactDate.forEach(function (transact) {
@@ -574,37 +565,131 @@ document.getElementById("close-withdraw").onclick = function() {
     document.getElementById("modal-withdraw").style.display = "none";
 }
 
+//transfer to other user
+document.getElementById("submit-transfer-other-user").onclick = function() {
+    let newBal = 0, newBalance = 0.00, statusFrom = '', statusTo = '';
+    let amount = parseFloat(document.getElementById("transfer-amount-user").value).toFixed(2);
+    let selectfrom = document.getElementById("transfer-account-from-user").options;
+    let accountfrom = selectfrom[selectfrom.selectedIndex].id;
+    let accountfromvalue = document.getElementById("transfer-account-from-user").value;
+    let accountto = document.getElementById("transfer-account-to-user").value;
+    let accounttoId = '';
+    let transactType = "transfer";
+    let filteredAccountUser = ACCOUNTTABLE.filter(function (users){
+        return users.userID == document.getElementById("user-id").value;
+    });
+    let filteredAccount = filteredAccountUser.filter(function (accounts){
+        return accounts.accountID == accountfrom;
+    });
+    filteredAccount.forEach(function (accounts) {
+        newBal = accounts.balance;
+        statusFrom = accounts.status;
+    });
+    let accountNumber = ACCOUNTTABLE.filter(function (accounts){
+        return accounts.accountNumber == accountto;
+    });
+    accountNumber.forEach(function (accounts) {
+        accounttoId = accounts.accountID;
+        statusTo = accounts.status;
+    });
+    if(statusFrom == 'Freeze' || statusTo == 'Freeze'){
+        alert('Cannot do withdrawals. Account is Frozen..\n'+
+        'Please Contact your Administrator.');
+    }
+    else{
+        newBalance = parseFloat(newBal).toFixed(2);
+        console.log(newBalance);
+        newBalance -= amount;
+        if(accountfrom == 'none'){
+            alert('Please Select an Account.');
+        }
+        else if(accountfromvalue == accountto){
+            alert('You are transfering to the same account.\n'+
+            'Please check the accounts');
+        }
+        else if(accountto == ''){
+            alert('Please Fill in where to Transfer.');
+        }
+        else if(amount != ''){
+            console.log(newBalance);
+            if(isNaN(amount)){
+                alert('Invalid amount.');
+            }
+            else if(amount<0){
+                alert('Amount sholud not be less than 0.');
+            }
+            else if(newBalance < 0.05){
+                alert('Cannot withdraw from account. Maintaining balance of 5 centavos is required.');
+            }
+            else if(accountNumber.length == 0){
+                alert('Account Number Does not Exist');
+            }
+            else{
+                if(!confirm('Confirm Transfer?')){
+                    return false;
+                }
+                else{
+                    let amountValue = parseFloat(amount).toFixed(2);
+                    let withamount = amountValue * -1
+                    addTransaction(withamount, transactType, accountfrom);
+                    addTransaction(amountValue, transactType, accounttoId);
+                    updateAccountTransact(withamount, accountfrom);
+                    updateAccountTransact(amountValue, accounttoId);
+                    let transactInfofrom = getTransactionTransferInfo(accountfrom, accounttoId, amountValue);
+                    viewReceipt(transactInfofrom, 'Transfer Complete');
+                    document.getElementById("modal-transfer-user").style.display = "none";
+                }
+            }
+        }else{
+            alert('Amount Missing.');
+        }
+    }
+};
+
 //deposit
 document.getElementById("submit-deposit").onclick = function() {
     let amount = parseFloat(document.getElementById("deposit-amount").value).toFixed(2);
     let select = document.getElementById("deposit-account").options;
     let account = select[select.selectedIndex].id, adminid = '';
-    let transactType = "deposit";
-    if(account == 'none'){
-        alert('Please Select an Account.');
+    let transactType = "deposit", status = '';
+    let filteredAccount = ACCOUNTTABLE.filter(function (accounts){
+        return accounts.accountID == account;
+    });
+    filteredAccount.forEach(function (accounts) {
+        newBal = accounts.balance;
+        status = accounts.status;
+    });
+    if(status == 'Freeze'){
+        alert('Cannot do Deposits. Account is Frozen.\n'+
+        'Please Contact your Administrator.');
     }
-    else if(amount != ''){
-        if(isNaN(amount)){
-            alert('Invalid amount.');
+    else{
+        if(account == 'none'){
+            alert('Please Select an Account.');
         }
-        else if(amount<0){
-            alert('Amount sholud not be less than 0.');
-        }
-        else{
-            if(!confirm('Confirm Deposit?')){
-                return false;
+        else if(amount != ''){
+            if(isNaN(amount)){
+                alert('Invalid amount.');
+            }
+            else if(amount<0){
+                alert('Amount sholud not be less than 0.');
             }
             else{
-                let amountValue = parseFloat(amount).toFixed(2);
-                addTransaction(amountValue, transactType, account);
-                updateAccountTransact(amountValue, account);
-                let transactInfo = getTransactionInfo(account, amountValue, adminid);
-                viewReceipt(transactInfo, 'Deposit Complete');
-                document.getElementById("modal-deposit").style.display = "none";
+                if(!confirm('Confirm Deposit?')){
+                    return false;
+                }
+                else{
+                    let amountValue = parseFloat(amount).toFixed(2);
+                    addTransaction(amountValue, transactType, account);
+                    updateAccountTransact(amountValue, account);
+                    let transactInfo = getTransactionInfo(account, amountValue, adminid);
+                    viewReceipt(transactInfo, 'Deposit Complete');
+                    document.getElementById("modal-deposit").style.display = "none";
+                }
             }
+        }else{
+            alert('Amount Missing.');
         }
-    }else{
-        alert('Amount Missing.');
     }
 };
 document.getElementById("close-deposit").onclick = function() {
@@ -661,77 +746,6 @@ document.getElementById("submit-transfer").onclick = function() {
                 updateAccountTransact(withamount, accountfrom);
                 updateAccountTransact(amountValue, accountto);
                 let transactInfofrom = getTransactionTransferInfo(accountfrom, accountto, amountValue);
-                viewReceipt(transactInfofrom, 'Transfer Complete');
-                document.getElementById("modal-transfer").style.display = "none";
-            }
-        }
-    }else{
-        alert('Amount Missing.');
-    }
-};
-
-//transfer to other user
-document.getElementById("submit-transfer-other-user").onclick = function() {
-    let newBal = 0, newBalance = 0.00;
-    let amount = parseFloat(document.getElementById("transfer-amount-user").value).toFixed(2);
-    let selectfrom = document.getElementById("transfer-account-from-user").options;
-    let accountfrom = selectfrom[selectfrom.selectedIndex].id;
-    let accountto = document.getElementById("transfer-account-to-user").value;
-    let accounttoId = '';
-    let transactType = "transfer";
-    let filteredAccountUser = ACCOUNTTABLE.filter(function (users){
-        return users.userID == document.getElementById("user-id").value;
-    });
-    let filteredAccount = filteredAccountUser.filter(function (accounts){
-        return accounts.accountID == accountfrom;
-    });
-    filteredAccount.forEach(function (accounts) {
-        newBal = accounts.balance;
-    });
-    let accountNumber = ACCOUNTTABLE.filter(function (accounts){
-        return accounts.accountNumber == accountto;
-    });
-    accountNumber.forEach(function (accounts) {
-        accounttoId = accounts.accountID;
-    });
-    newBalance = parseFloat(newBal).toFixed(2);
-    console.log(newBalance);
-    newBalance -= amount;
-    if(accountfrom == 'none'){
-        alert('Please Select an Account.');
-    }
-    else if(accountfrom == accountto){
-        alert('You are transfering to the same account.');
-    }
-    else if(accountto == ''){
-        alert('Please Fill in where to Transfer.');
-    }
-    else if(amount != ''){
-        console.log(newBalance);
-        if(isNaN(amount)){
-            alert('Invalid amount.');
-        }
-        else if(amount<0){
-            alert('Amount sholud not be less than 0.');
-        }
-        else if(newBalance < 0.05){
-            alert('Cannot withdraw from account. Maintaining balance of 5 centavos is required.');
-        }
-        else if(accountNumber.length == 0){
-            alert('Account Number Does not Exist');
-        }
-        else{
-            if(!confirm('Confirm Transfer?')){
-                return false;
-            }
-            else{
-                let amountValue = parseFloat(amount).toFixed(2);
-                let withamount = amountValue * -1
-                addTransaction(withamount, transactType, accountfrom);
-                addTransaction(amountValue, transactType, accounttoId);
-                updateAccountTransact(withamount, accountfrom);
-                updateAccountTransact(amountValue, accounttoId);
-                let transactInfofrom = getTransactionTransferInfo(accountfrom, accounttoId, amountValue);
                 viewReceipt(transactInfofrom, 'Transfer Complete');
                 document.getElementById("modal-transfer").style.display = "none";
             }
@@ -990,9 +1004,11 @@ function viewAccountAdmin(id){
     });
     if(status=='Freeze'){
         document.getElementById("submit-account-status-admin").innerHTML = 'Unfreeze';
+        document.getElementById("submit-account-status-admin").style.background = '#12b564';
     }
     else{
         document.getElementById("submit-account-status-admin").innerHTML = 'Freeze';
+        document.getElementById("submit-account-status-admin").style.background = '#ab2905';
     }
     viewTableAdminUser(id);
 }
@@ -1061,7 +1077,7 @@ document.getElementById("submit-account-edit-admin").onclick = function() {
         });
         viewTableAdmin();
         alert('User updated.');
-        document.getElementById("modal-account-admin").style.display = "none";
+        //document.getElementById("modal-account-admin").style.display = "none";
     }
 }
 
@@ -1272,10 +1288,11 @@ document.getElementById("submit-account-edit").onclick = function() {
             accounts.accountName = document.getElementById("account-name").value;
         }); 
         accountNameNew = document.getElementById("account-name").value;
-        console.log(document.getElementById("account-id").value, accountNameNew, document.getElementById("balance").textContent);
+        //console.log(document.getElementById("account-id").value, accountNameNew, document.getElementById("balance").textContent);
         viewTableUser();
         alert('Account updated.');
-        viewAccount(document.getElementById("account-id").value,  accountNameNew, document.getElementById("balance").textContent)
+        viewAccount(document.getElementById("account-id").value,  accountNameNew, 
+        document.getElementById("balance").textContent, document.getElementById("account-number").textContent);
     }
 }
 
