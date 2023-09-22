@@ -1,22 +1,20 @@
 let USERTABLE = [];
 USERTABLE = [
 	{userID: "admin", firstName: "Neil", lastName: "Administrator", email: "admin@gmail.com", userName: "admin", password: "admin", userType: 0, status: "Unfreeze", attemptLogin: 100},
-	{userID: "user1", firstName: "Neil1", lastName: "Falceso1", email: "admin@gmail.com", userName: "user1", password: "user1", userType: 1, status: "Unfreeze", attemptLogin: 0},
-	{userID: "user2", firstName: "Neil2", lastName: "Falceso2", email: "admin@gmail.com", userName: "user2", password: "user2", userType: 1, status: "Unfreeze", attemptLogin: 0},
+	/*{userID: "user1", firstName: "Sample 1", lastName: "Sample", email: "sample@gmail.com", userName: "sample1", password: "sample1", userType: 1, status: "Unfreeze", attemptLogin: 0},
+	{userID: "user2", firstName: "Sample 2", lastName: "Sample 2", email: "sample@gmail.com", userName: "sample2", password: "sample2", userType: 1, status: "Unfreeze", attemptLogin: 0},*/
 	];
 
 let ACCOUNTTABLE = [];
 ACCOUNTTABLE = [
-	{accountID: "account1", accountNumber: "number1", accountName: "My Savings1", userID: "user1", balance: '10.00', status: "Unfreeze"},
-    {accountID: "account2", accountNumber: "number2", accountName: "My Savings2", userID: "user1", balance: '20.00', status: "Freeze"},
-    {accountID: "account3", accountNumber: "number3", accountName: "My Savings2", userID: "user2", balance: '20.00', status: "Unfreeze"},
-//	{accountID: "account1", accountName: "My Savings3", userID: "user2", balance: 10.00, status: "Active"},
-//    {accountID: "account2", accountName: "My Savings4", userID: "user2", balance: 20.00, status: "Active"},
+	/*{accountID: "account1", accountNumber: "number1", accountName: "MySavings1", userID: "user1", balance: '1.00', status: "Unfreeze"},
+    {accountID: "account2", accountNumber: "number2", accountName: "MySavings2", userID: "user2", balance: '5.00', status: "Freeze"},
+    {accountID: "account3", accountNumber: "number3", accountName: "My Savings3", userID: "user3", balance: '20.00', status: "Unfreeze"},*/
 	];
 
 let TRANSACTION = [];
 TRANSACTION = [
-    {transactionID: "14", userID: "user1", account: "account1", amount: '-.10', transactionType: "withdrawal", transactionDate: '9/20/2023, 7:35:48 PM'},
+    /*{transactionID: "14", userID: "user1", account: "account1", amount: '-.10', transactionType: "withdrawal", transactionDate: '9/20/2023, 7:35:48 PM'},
     {transactionID: "6", userID: "user1", account: "account1", amount: '-.40', transactionType: "withdrawal", transactionDate: '9/20/2023, 5:31:48 PM'},
     {transactionID: "5", userID: "user1", account: "account1", amount: '-.20', transactionType: "transfer", transactionDate: '9/20/2023, 5:31:48 PM'},
     {transactionID: "13", userID: "user1", account: "account1", amount: '-.50', transactionType: "withdrawal", transactionDate: '5/17/2023, 8:36:48 PM'},
@@ -29,7 +27,7 @@ TRANSACTION = [
     {transactionID: "4", userID: "user1", account: "account1", amount: '1.50', transactionType: "transfer", transactionDate: '10/15/2022, 5:31:48 PM'},
     {transactionID: "3", userID: "user1", account: "account2", amount: '1.50', transactionType: "transfer", transactionDate: '10/15/2022, 5:31:48 PM'},
     {transactionID: "2", userID: "user1", account: "account2", amount: '1.50', transactionType: "transfer", transactionDate: '10/15/2022, 5:31:48 PM'},
-    {transactionID: "1", userID: "user1", account: "account2", amount: '1.50', transactionType: "transfer", transactionDate: '10/15/2022, 5:31:48 PM'},
+    {transactionID: "1", userID: "user1", account: "account2", amount: '1.50', transactionType: "transfer", transactionDate: '10/15/2022, 5:31:48 PM'},*/
     ];
 
 
@@ -549,7 +547,7 @@ document.getElementById("submit-withdraw").onclick = function() {
                         let withdrawAmount = amountValue * -1;
                         addTransaction(parseFloat(withdrawAmount).toFixed(2), transactType, account);
                         updateAccountTransact(withdrawAmount, account);
-                        let transactInfo = getTransactionInfo(account, amountValue, adminid);
+                        let transactInfo = getTransactionInfo(account, withdrawAmount, adminid);
                         viewReceipt(transactInfo, 'Withdrawal Complete');
                         document.getElementById("modal-withdraw").style.display = "none";
                     }
@@ -635,7 +633,7 @@ document.getElementById("submit-transfer-other-user").onclick = function() {
                     addTransaction(amountValue, transactType, accounttoId);
                     updateAccountTransact(withamount, accountfrom);
                     updateAccountTransact(amountValue, accounttoId);
-                    let transactInfofrom = getTransactionTransferInfo(accountfrom, accounttoId, amountValue);
+                    let transactInfofrom = getTransactionTransferInfo(accountfrom, accounttoId, withamount);
                     viewReceipt(transactInfofrom, 'Transfer Complete');
                     document.getElementById("modal-transfer-user").style.display = "none";
                 }
@@ -1157,7 +1155,7 @@ document.getElementById("remove-funds-submit").onclick = function() {
                     let withdrawAmount = amountValue * -1;
                     addTransaction(parseFloat(withdrawAmount).toFixed(2), transactType, account, adminid);
                     updateAccountTransact(withdrawAmount, account);
-                    let transactInfo = getTransactionInfo(account, amountValue, adminid);
+                    let transactInfo = getTransactionInfo(account, withdrawAmount, adminid);
                     viewReceipt(transactInfo, 'Funds Removal Complete');
                     viewAccountAdminUser(account);
                     viewTableAdminUser(userid);
