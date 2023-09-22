@@ -1,20 +1,20 @@
 let USERTABLE = [];
 USERTABLE = [
 	{userID: "admin", firstName: "Neil", lastName: "Administrator", email: "admin@gmail.com", userName: "admin", password: "admin", userType: 0, status: "Unfreeze", attemptLogin: 100},
-	/*{userID: "user1", firstName: "Sample 1", lastName: "Sample", email: "sample@gmail.com", userName: "sample1", password: "sample1", userType: 1, status: "Unfreeze", attemptLogin: 0},
-	{userID: "user2", firstName: "Sample 2", lastName: "Sample 2", email: "sample@gmail.com", userName: "sample2", password: "sample2", userType: 1, status: "Unfreeze", attemptLogin: 0},*/
+	{userID: "user1", firstName: "Sample 1", lastName: "Sample", email: "sample@gmail.com", userName: "user1", password: "user1", userType: 1, status: "Unfreeze", attemptLogin: 0},
+	{userID: "user2", firstName: "Sample 2", lastName: "Sample 2", email: "sample@gmail.com", userName: "user2", password: "user2", userType: 1, status: "Unfreeze", attemptLogin: 0},
 	];
 
 let ACCOUNTTABLE = [];
 ACCOUNTTABLE = [
-	/*{accountID: "account1", accountNumber: "number1", accountName: "MySavings1", userID: "user1", balance: '1.00', status: "Unfreeze"},
+	{accountID: "account1", accountNumber: "number1", accountName: "MySavings1", userID: "user1", balance: '1.00', status: "Unfreeze"},
     {accountID: "account2", accountNumber: "number2", accountName: "MySavings2", userID: "user2", balance: '5.00', status: "Freeze"},
-    {accountID: "account3", accountNumber: "number3", accountName: "My Savings3", userID: "user3", balance: '20.00', status: "Unfreeze"},*/
+    {accountID: "account3", accountNumber: "number3", accountName: "My Savings3", userID: "user3", balance: '20.00', status: "Unfreeze"},
 	];
 
 let TRANSACTION = [];
 TRANSACTION = [
-    /*{transactionID: "14", userID: "user1", account: "account1", amount: '-.10', transactionType: "withdrawal", transactionDate: '9/20/2023, 7:35:48 PM'},
+    {transactionID: "14", userID: "user1", account: "account1", amount: '-.10', transactionType: "withdrawal", transactionDate: '9/20/2023, 7:35:48 PM'},
     {transactionID: "6", userID: "user1", account: "account1", amount: '-.40', transactionType: "withdrawal", transactionDate: '9/20/2023, 5:31:48 PM'},
     {transactionID: "5", userID: "user1", account: "account1", amount: '-.20', transactionType: "transfer", transactionDate: '9/20/2023, 5:31:48 PM'},
     {transactionID: "13", userID: "user1", account: "account1", amount: '-.50', transactionType: "withdrawal", transactionDate: '5/17/2023, 8:36:48 PM'},
@@ -27,7 +27,7 @@ TRANSACTION = [
     {transactionID: "4", userID: "user1", account: "account1", amount: '1.50', transactionType: "transfer", transactionDate: '10/15/2022, 5:31:48 PM'},
     {transactionID: "3", userID: "user1", account: "account2", amount: '1.50', transactionType: "transfer", transactionDate: '10/15/2022, 5:31:48 PM'},
     {transactionID: "2", userID: "user1", account: "account2", amount: '1.50', transactionType: "transfer", transactionDate: '10/15/2022, 5:31:48 PM'},
-    {transactionID: "1", userID: "user1", account: "account2", amount: '1.50', transactionType: "transfer", transactionDate: '10/15/2022, 5:31:48 PM'},*/
+    {transactionID: "1", userID: "user1", account: "account2", amount: '1.50', transactionType: "transfer", transactionDate: '10/15/2022, 5:31:48 PM'},
     ];
 
 
@@ -300,7 +300,7 @@ window.onclick = function(event) {
 //add transaction
 function addTransaction(amount, transactType, accountId, adminid){
     let admountValue = parseFloat(amount).toFixed(2), getUser = '';
-    console.log(adminid);
+    console.log('adminid'+adminid);
     if(adminid == ''){
         let filteredUser = ACCOUNTTABLE.filter(function (accounts){
             return accounts.accountID == accountId;
@@ -477,9 +477,9 @@ function getTransactionTransferInfo(accountFrom, accountTo, amount){
 }
 //withdrawal
 document.getElementById("submit-withdraw").onclick = function() {
-    let newBal = 0, newBalance = 0.00, datetoday = new Date(), dateTransact = '';
+    let newBal = 0, newBalance = 0.00, datetoday = new Date(), adminid = document.getElementById("admin-id").value;
     let amount = parseFloat(document.getElementById("withdraw-amount").value).toFixed(2);
-    let select = document.getElementById("withdraw-account").options, adminid = '';
+    let select = document.getElementById("withdraw-account").options;
     let account = select[select.selectedIndex].id, status = '';
     let transactType = "withdrawal", shortDate = `${datetoday.getMonth()+1}/${datetoday.getDate()}/${datetoday.getFullYear()}`;
     let totalWithdraw = 0.00, withAmount = 0.00;
@@ -545,7 +545,7 @@ document.getElementById("submit-withdraw").onclick = function() {
                     else{
                         let amountValue = parseFloat(amount).toFixed(2);
                         let withdrawAmount = amountValue * -1;
-                        addTransaction(parseFloat(withdrawAmount).toFixed(2), transactType, account);
+                        addTransaction(parseFloat(withdrawAmount).toFixed(2), transactType, account, adminid);
                         updateAccountTransact(withdrawAmount, account);
                         let transactInfo = getTransactionInfo(account, withdrawAmount, adminid);
                         viewReceipt(transactInfo, 'Withdrawal Complete');
@@ -571,7 +571,7 @@ document.getElementById("submit-transfer-other-user").onclick = function() {
     let accountfrom = selectfrom[selectfrom.selectedIndex].id;
     let accountfromvalue = document.getElementById("transfer-account-from-user").value;
     let accountto = document.getElementById("transfer-account-to-user").value;
-    let accounttoId = '';
+    let accounttoId = '', adminid = document.getElementById("admin-id").value;
     let transactType = "transfer";
     let filteredAccountUser = ACCOUNTTABLE.filter(function (users){
         return users.userID == document.getElementById("user-id").value;
@@ -629,8 +629,8 @@ document.getElementById("submit-transfer-other-user").onclick = function() {
                 else{
                     let amountValue = parseFloat(amount).toFixed(2);
                     let withamount = amountValue * -1
-                    addTransaction(withamount, transactType, accountfrom);
-                    addTransaction(amountValue, transactType, accounttoId);
+                    addTransaction(withamount, transactType, accountfrom, adminid);
+                    addTransaction(amountValue, transactType, accounttoId, adminid);
                     updateAccountTransact(withamount, accountfrom);
                     updateAccountTransact(amountValue, accounttoId);
                     let transactInfofrom = getTransactionTransferInfo(accountfrom, accounttoId, withamount);
@@ -648,7 +648,7 @@ document.getElementById("submit-transfer-other-user").onclick = function() {
 document.getElementById("submit-deposit").onclick = function() {
     let amount = parseFloat(document.getElementById("deposit-amount").value).toFixed(2);
     let select = document.getElementById("deposit-account").options;
-    let account = select[select.selectedIndex].id, adminid = '';
+    let account = select[select.selectedIndex].id, adminid = document.getElementById("admin-id").value;
     let transactType = "deposit", status = '';
     let filteredAccount = ACCOUNTTABLE.filter(function (accounts){
         return accounts.accountID == account;
@@ -678,7 +678,7 @@ document.getElementById("submit-deposit").onclick = function() {
                 }
                 else{
                     let amountValue = parseFloat(amount).toFixed(2);
-                    addTransaction(amountValue, transactType, account);
+                    addTransaction(amountValue, transactType, account, adminid);
                     updateAccountTransact(amountValue, account);
                     let transactInfo = getTransactionInfo(account, amountValue, adminid);
                     viewReceipt(transactInfo, 'Deposit Complete');
@@ -702,7 +702,7 @@ document.getElementById("submit-transfer").onclick = function() {
     let selectto = document.getElementById("transfer-account-to").options;
     let accountfrom = selectfrom[selectfrom.selectedIndex].id;
     let accountto = selectto[selectto.selectedIndex].id;
-    let transactType = "transfer";
+    let transactType = "transfer", adminid = document.getElementById("admin-id").value;
     let filteredAccountUser = ACCOUNTTABLE.filter(function (users){
         return users.userID == document.getElementById("user-id").value;
     });
@@ -739,8 +739,8 @@ document.getElementById("submit-transfer").onclick = function() {
             else{
                 let amountValue = parseFloat(amount).toFixed(2);
                 let withamount = amountValue * -1
-                addTransaction(withamount, transactType, accountfrom);
-                addTransaction(amountValue, transactType, accountto);
+                addTransaction(withamount, transactType, accountfrom, adminid);
+                addTransaction(amountValue, transactType, accountto, adminid);
                 updateAccountTransact(withamount, accountfrom);
                 updateAccountTransact(amountValue, accountto);
                 let transactInfofrom = getTransactionTransferInfo(accountfrom, accountto, amountValue);
